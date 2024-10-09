@@ -25,19 +25,28 @@ sequenceDiagram
 ## 예약 가능 날짜 조회
 ``` mermaid
 sequenceDiagram
-  autonumber
-  
-  actor User
-  participant API
-  participant Concert
-  participant Database
-  
-  User ->> +API: 예약 가능 날짜 조회 요청
-  API ->> +Concert: 예약 가능 날짜 요청
-  Concert ->> +Database: 날짜 조회
-  Database -->> -Concert: 날짜 반환
-  Concert -->> -API: 예약 가능 날짜 목록 반환
-  API -->> -User: 예약 가능 날짜 목록 반환
+	autonumber
+	
+	actor User
+	participant API
+	participant Token
+	participant Concert
+	participant Database
+	
+	User ->> +API: 예약 가능 날짜 조회 요청
+	API ->> +Token: 토큰 유효성 검증
+	Token ->> +Database: 토큰 조회
+	Database -->> -Token: 토큰 반환
+	Token -->> -API: 토큰 검증 결과
+	alt 유효한 토큰
+	API ->> +Concert: 예약 가능 날짜 요청
+	Concert ->> +Database: 날짜 조회
+	Database -->> -Concert: 날짜 반환
+	Concert -->> -API: 예약 가능 날짜 목록 반환
+	API -->> -User: 예약 가능 날짜 목록 반환
+	else 유효하지 않은 토큰
+	API -->> User: 오류 메시지 반환
+	end
 ```
 
 ## 예약 가능 좌석 조회
@@ -47,15 +56,24 @@ sequenceDiagram
 	
 	actor User
 	participant API
+	participant Token
 	participant Seat
 	participant Database
 	
 	User ->> +API: 예약 가능 좌석 조회 요청
+	API ->> +Token: 토큰 유효성 검증
+	Token ->> +Database: 토큰 조회
+	Database -->> -Token: 토큰 반환
+	Token -->> -API: 토큰 검증 결과
+	alt 유효한 토큰
 	API ->> +Seat: 예약 가능 좌석 요청
 	Seat ->> +Database: 좌석 조회
 	Database -->> -Seat: 좌석 반환
 	Seat -->> -API: 예약 가능 좌석 목록 반환
 	API -->> -User: 예약 가능 좌석 목록 반환
+	else 유효하지 않은 토큰
+	API -->> User: 오류 메시지 반환
+	end
 ```
 
 ## 잔액 조회
