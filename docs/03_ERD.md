@@ -47,6 +47,7 @@ erDiagram
         int user_id FK
         int amount
         datetime payment_at
+        string status
     }
 
     balance {
@@ -59,12 +60,11 @@ erDiagram
     queue {
         int id PK
         int user_id FK
-        int waiting_id
+        string token
         string status
         datetime created_at
         datetime entered_at
         datetime last_updated_at
-        string token
     }
     user {
         int id PK
