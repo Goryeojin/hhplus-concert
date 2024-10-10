@@ -1,4 +1,4 @@
-package hhplus.concert.application.dto;
+package hhplus.concert.interfaces.dto;
 
 import hhplus.concert.support.type.PaymentStatus;
 import lombok.AllArgsConstructor;

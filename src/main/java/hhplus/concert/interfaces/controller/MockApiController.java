@@ -1,6 +1,6 @@
-package hhplus.concert.application.controller;
+package hhplus.concert.interfaces.controller;
 
-import hhplus.concert.application.dto.*;
+import hhplus.concert.interfaces.dto.*;
 import hhplus.concert.support.type.PaymentStatus;
 import hhplus.concert.support.type.QueueStatus;
 import hhplus.concert.support.type.ReservationStatus;

@@ -1,4 +1,4 @@
-package hhplus.concert.application.dto;
+package hhplus.concert.interfaces.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import hhplus.concert.support.type.QueueStatus;
