@@ -1,6 +1,6 @@
 ```mermaid
 ---
-title: Concert Reservation Service
+title: Concert Reservation Service ERD
 ---
 erDiagram
     user ||--o{ reservation : has
@@ -21,7 +21,7 @@ erDiagram
     concert_schedule {
         int id PK
         int concert_id FK
-        datetime reservation_avilable_at
+        datetime reservation_available_at
         datetime concert_at
     }
     seat {
