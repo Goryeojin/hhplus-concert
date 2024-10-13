@@ -8,20 +8,18 @@ import lombok.NoArgsConstructor;
 
 public class PaymentDto {
 
-    @Getter
     @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class Request {
-        private Long userId;
-        private Long reservationId;
+    public record Request (
+            Long userId,
+            Long reservationId
+    ) {
     }
 
-    @Getter
     @Builder
-    public static class Response {
-        private Long paymentId;
-        private Long amount;
-        private PaymentStatus paymentStatus;
+    public record Response (
+        Long paymentId,
+        Long amount,
+        PaymentStatus paymentStatus
+    ) {
     }
 }

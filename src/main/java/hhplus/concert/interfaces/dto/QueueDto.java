@@ -9,12 +9,12 @@ import java.time.LocalDateTime;
 
 public class QueueDto {
 
-    @Getter
     @Builder
-    public static class Response {
+    public record Response (
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-        private LocalDateTime createdAt;
-        private QueueStatus status;
-        private Long remainingQueueCount;
+        LocalDateTime createdAt,
+        QueueStatus status,
+        Long remainingQueueCount
+    ) {
     }
 }

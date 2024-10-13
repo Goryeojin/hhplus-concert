@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/mock")
+@RequestMapping("/api/v1")
 public class MockApiController {
     // 1. 대기열 큐에 사용자를 추가하고 토큰을 발급한다.
     @PostMapping("/queue/tokens")
@@ -27,7 +27,7 @@ public class MockApiController {
 
     // 2. 토큰을 조회한다.
     @GetMapping("/queue/tokens")
-    public ResponseEntity<TokenDto.Response> getToken(@RequestParam Long userId) {
+    public ResponseEntity<TokenDto.Response> getToken(@RequestHeader("User-Id") String token) {
         return ResponseEntity.ok(
                 TokenDto.Response.builder()
                         .token("a1b2c3d4")
@@ -39,8 +39,8 @@ public class MockApiController {
     // 3. 대기 상태를 조회한다.
     @GetMapping("/queue/status")
     public ResponseEntity<QueueDto.Response> getQueueStatus(
-            @RequestHeader("TOKEN") String token,
-            @RequestParam Long userId
+            @RequestHeader("Token") String token,
+            @RequestHeader("User-Id") Long userId
     ) {
         return ResponseEntity.ok(
                 QueueDto.Response.builder()
@@ -51,7 +51,7 @@ public class MockApiController {
     }
 
     // 4. 콘서트 예약 가능 일정 조회
-    @GetMapping("/concerts/{concertId}/schedule")
+    @GetMapping("/concerts/{concertId}/schedules")
     public ResponseEntity<ScheduleDto.Response> getConcertSchedule(
             @RequestHeader("TOKEN") String token,
             @PathVariable Long concertId
@@ -59,7 +59,7 @@ public class MockApiController {
         return ResponseEntity.ok(
                 ScheduleDto.Response.builder()
                         .concertId(1L)
-                        .schedule(List.of(
+                        .schedules(List.of(
                                 ScheduleDto.Response.ScheduleInfo.builder()
                                         .scheduleId(1L)
                                         .concertAt(LocalDateTime.now())
@@ -75,7 +75,7 @@ public class MockApiController {
     }
 
     // 5. 콘서트 예약 가능 좌석 조회
-    @GetMapping("/concerts/{concertId}/schedule/{scheduleId}/seats")
+    @GetMapping("/concerts/{concertId}/schedules/{scheduleId}/seats")
     public ResponseEntity<SeatDto.Response> getSeats(
             @RequestHeader("TOKEN") String token,
             @PathVariable Long concertId,

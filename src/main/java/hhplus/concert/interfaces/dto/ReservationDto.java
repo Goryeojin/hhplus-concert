@@ -11,23 +11,24 @@ import java.util.List;
 public class ReservationDto {
 
     @Builder
-    public static class Request {
-        private Long userId;
-        private Long concertId;
-        private Long scheduleId;
-        private List<Integer> seatIds;
+    public record Request (
+        Long userId,
+        Long concertId,
+        Long scheduleId,
+        List<Integer> seatIds
+    ) {
     }
 
-    @Getter
     @Builder
-    public static class Response {
-        private Long reservationId;
-        private Long concertId;
-        private String concertName;
+    public record Response (
+        Long reservationId,
+        Long concertId,
+        String concertName,
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-        private LocalDateTime concertAt;
-        private List<SeatDto.Response.SeatInfo> seats;
-        private Long totalPrice;
-        private ReservationStatus reservationStatus;
+        LocalDateTime concertAt,
+        List<SeatDto.Response.SeatInfo> seats,
+        Long totalPrice,
+        ReservationStatus reservationStatus
+    ) {
     }
 }

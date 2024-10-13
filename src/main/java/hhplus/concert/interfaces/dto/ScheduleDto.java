@@ -9,20 +9,19 @@ import java.util.List;
 
 public class ScheduleDto {
 
-    @Getter
     @Builder
-    public static class Response {
-        private Long concertId;
-        private List<ScheduleInfo> schedule;
-
-        @Getter
+    public record Response (
+        Long concertId,
+        List<ScheduleInfo> schedules
+    ) {
         @Builder
-        public static class ScheduleInfo {
-            private Long scheduleId;
+        public record ScheduleInfo (
+            Long scheduleId,
             @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-            private LocalDateTime concertAt;
+            LocalDateTime concertAt,
             @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-            private LocalDateTime reservationAt;
+            LocalDateTime reservationAt
+        ) {
         }
     }
 }

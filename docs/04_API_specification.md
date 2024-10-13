@@ -46,10 +46,10 @@
 
 ### Request
 
-- **URI**: `api/v1/queue/tokens?userId={userId}`
+- **URI**: `api/v1/queue/tokens`
 - **Method**: GET
-- **Query Params**:
-    - `userId`: Long (사용자 ID)
+- **Headers**:
+    - `User-Id`: Long (사용자 ID)
 
 ### Response
 
@@ -82,11 +82,9 @@
 
 - **URI**: `api/v1/queue/status?userId={userId}`
 - **Method**: GET
-- **Query Params**:
-    - `userId`: Long (사용자 ID)
-
 - **Headers**:
-    - `TOKEN`: String (토큰 UUID)
+    - `Token`: String (토큰 UUID)
+    - `User-Id`: Long (사용자 ID)
 
 ### Response
 
@@ -123,19 +121,19 @@
 
 ### Request
 
-- **URI**: `api/v1/concerts/{concertId}/schedule`
+- **URI**: `api/v1/concerts/{concertId}/schedules`
 - **Method**: GET
 - **Path Variable**:
     - `concertId`: Long (콘서트 ID)
 - **Headers**:
-    - `TOKEN`: String (토큰 UUID)
+    - `Token`: String (토큰 UUID)
 
 ### Response
 
 ```json
 {
   "concertId": 1,
-  "schedule": [
+  "schedules": [
     {
       "scheduleId": 1,
       "concertAt": "2024-10-10 00:00:00",
@@ -151,7 +149,7 @@
 ```
 - **Response**:
   - `concertId`: Long (콘서트 ID)
-  - `schedule`: List (일정 목록)
+  - `schedules`: List (일정 목록)
     - `scheduleId`: Long (일정 ID)
     - `concertAt`: DateTime (콘서트 시각)
     - `reservationAt`: DateTime (예약 시각)
@@ -183,13 +181,13 @@
 
 ### Request
 
-- **URI**: `api/v1/concerts/{concertId}/schedule/{scheduleId}/seats`
+- **URI**: `api/v1/concerts/{concertId}/schedules/{scheduleId}/seats`
 - **Method**: GET
 - **Path Variable**:
     - `concertId`: Long (콘서트 ID)
     - `scheduleId`: Long (일정 ID)
 - **Headers**:
-    - `TOKEN`: String (토큰 UUID)
+    - `Token`: String (토큰 UUID)
 
 ### Response
 
@@ -261,7 +259,7 @@
 - **URI**: `api/v1/reservations`
 - **Method**: POST
 - **Headers**:
-    - `TOKEN`: String (토큰 UUID)
+    - `Token`: String (토큰 UUID)
     - `Content-Type`: application/json
 
 
@@ -362,7 +360,7 @@
 - **URI**: `api/v1/payments`
 - **Method**: POST
 - **Headers**:
-    - `TOKEN`: String (토큰 UUID)
+    - `Token`: String (토큰 UUID)
     - `Content-Type`: application/json
 
 

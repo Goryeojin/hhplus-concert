@@ -10,22 +10,22 @@ import java.util.List;
 
 public class SeatDto {
 
-    @Getter
     @Builder
-    public static class Response {
-        private Long concertId;
+    public record Response (
+        Long concertId,
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-        private LocalDateTime concertAt;
-        private Long maxSeats;
-        private List<?> seats;
+        LocalDateTime concertAt,
+        Long maxSeats,
+        List<?> seats
+    ) {
 
-        @Getter
         @Builder
-        public static class SeatInfo {
-            private Long seatId;
-            private Long seatNumber;
-            private SeatStatus seatStatus;
-            private Long seatPrice;
+        public record SeatInfo (
+            Long seatId,
+            Long seatNumber,
+            SeatStatus seatStatus,
+            Long seatPrice
+        ) {
         }
     }
 }
