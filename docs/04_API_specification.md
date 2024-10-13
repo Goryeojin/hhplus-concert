@@ -363,7 +363,6 @@
     - `Token`: String (토큰 UUID)
     - `Content-Type`: application/json
 
-
 - **Body**:
 ```json
 {

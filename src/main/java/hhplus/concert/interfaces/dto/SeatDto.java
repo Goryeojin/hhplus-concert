@@ -3,7 +3,6 @@ package hhplus.concert.interfaces.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import hhplus.concert.support.type.SeatStatus;
 import lombok.Builder;
-import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,7 +17,6 @@ public class SeatDto {
         Long maxSeats,
         List<?> seats
     ) {
-
         @Builder
         public record SeatInfo (
             Long seatId,

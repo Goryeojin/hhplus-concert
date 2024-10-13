@@ -17,6 +17,7 @@ erDiagram
         int id PK
         string title
         string description
+        string status
     }
     concert_schedule {
         int id PK
@@ -76,6 +77,7 @@ erDiagram
   - `id`: 콘서트 고유 ID로 PK 설정
   - `title`: 콘서트 이름
   - `description`: 콘서트 설명
+  - `status`: 콘서트 활성 상태 (AVAILABLE, UNAVAILABLE)
 
 2. concert_schedule (콘서트 일정 테이블)
   - `id`: 콘서트 일정 고유 ID로 PK 설정
