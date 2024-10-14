@@ -65,7 +65,7 @@ erDiagram
         string status
         datetime created_at
         datetime entered_at
-        datetime last_updated_at
+        datetime expired_at
     }
     user {
         int id PK
@@ -120,7 +120,7 @@ erDiagram
   - `token`: 토큰
   - `created_at`: 토큰 생성 시각
   - `entered_at`: 대기열 활성화 시각
-  - `last_updated_at`: 마지막 서비스 접속 시각
+  - `expired_at`: 토큰 만료 시각
 
 8. user (사용자 테이블)
   - `id`: 사용자 고유 ID로 PK 설정

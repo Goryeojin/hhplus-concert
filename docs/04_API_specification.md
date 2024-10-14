@@ -22,14 +22,12 @@
 ```json
 {
   "token": "a1b2c3d4",
-  "createdAt": "2024-10-10 00:00:00",
-  "expiredAt": "2024-10-10 00:10:00"
+  "createdAt": "2024-10-10 00:00:00"
 }
 ```
 - **Response**:
   - `token`: String (토큰 UUID)
   - `createdAt`: DateTime (생성 시각)
-  - `expiredAt`: DateTime (만료 시각)
 
 ### Error
 ```json
@@ -56,14 +54,12 @@
 ```json
 {
   "token": "a1b2c3d4",
-  "createdAt": "2024-10-10 00:00:00",
-  "expiredAt": "2024-10-10 00:10:00"
+  "createdAt": "2024-10-10 00:00:00"
 }
 ```
 - **Response**:
   - `token`: String (토큰 UUID)
   - `createdAt`: DateTime (생성 시각)
-  - `expiredAt`: DateTime (만료 시각)
 
 ### Error
 ```json
