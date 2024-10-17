@@ -1,14 +1,19 @@
 package hhplus.concert.interfaces.controller;
 
+import hhplus.concert.application.facade.PaymentFacade;
+import hhplus.concert.domain.model.Payment;
 import hhplus.concert.interfaces.dto.PaymentDto;
 import hhplus.concert.support.type.PaymentStatus;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/payments")
+@RequiredArgsConstructor
 public class PaymentController {
 
+    private final PaymentFacade paymentFacade;
 
     /**
      * 결제를 진행한다.
@@ -21,11 +26,12 @@ public class PaymentController {
             @RequestHeader("Token") String token,
             @RequestBody PaymentDto.Request request
     ) {
+        Payment payment = paymentFacade.payment(token, request.reservationId(), request.userId());
         return ResponseEntity.ok(
                 PaymentDto.Response.builder()
-                        .paymentId(1L)
-                        .amount(30000L)
-                        .paymentStatus(PaymentStatus.COMPLETED).build()
+                        .paymentId(payment.id())
+                        .amount(payment.amount())
+                        .paymentStatus(payment.status()).build()
         );
     }
 }
