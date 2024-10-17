@@ -10,6 +10,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity(name = "seat")
 @Getter
 @Builder
@@ -32,6 +34,8 @@ public class SeatEntity {
     @Enumerated(value = EnumType.STRING)
     private SeatStatus status;
 
+    private LocalDateTime reservationAt;
+
     @Column(nullable = false)
     private int seatPrice;
 
@@ -41,15 +45,18 @@ public class SeatEntity {
                 .concertScheduleId(entity.getConcertSchedule().getId())
                 .seatNo(entity.getSeatNo())
                 .status(entity.getStatus())
+                .reservationAt(entity.getReservationAt())
                 .seatPrice(entity.getSeatPrice())
                 .build();
     }
 
     public static SeatEntity from(Seat seat) {
         return SeatEntity.builder()
+                .id(seat.id())
                 .concertSchedule(ConcertScheduleEntity.builder().id(seat.concertScheduleId()).build())
                 .seatNo(seat.seatNo())
                 .status(seat.status())
+                .reservationAt(seat.reservationAt())
                 .seatPrice(seat.seatPrice())
                 .build();
     }
