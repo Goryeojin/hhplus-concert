@@ -1,12 +1,20 @@
 package hhplus.concert.interfaces.controller;
 
+import hhplus.concert.application.facade.BalanceFacade;
+import hhplus.concert.domain.model.Balance;
+import hhplus.concert.domain.service.BalanceService;
 import hhplus.concert.interfaces.dto.BalanceDto;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/balance")
+@RequestMapping("/api/v1")
+@RequiredArgsConstructor
 public class BalanceController {
+
+    private final BalanceFacade balanceFacade;
 
     /**
      * 잔액을 조회한다.
@@ -15,10 +23,11 @@ public class BalanceController {
      */
     @GetMapping("/users/{userId}/balance")
     public ResponseEntity<BalanceDto.Response> getBalance(@PathVariable Long userId) {
+        Balance balance = balanceFacade.getBalance(userId);
         return ResponseEntity.ok(
                 BalanceDto.Response.builder()
-                        .userId(1L)
-                        .currentAmount(50000L).build()
+                        .userId(balance.userId())
+                        .currentAmount(balance.amount()).build()
         );
     }
 
@@ -31,12 +40,13 @@ public class BalanceController {
     @PatchMapping("/users/{userId}/balance")
     public ResponseEntity<BalanceDto.Response> chargeBalance(
             @PathVariable Long userId,
-            @RequestBody BalanceDto.Request request
+            @Valid @RequestBody BalanceDto.Request request
     ) {
+        Balance balance = balanceFacade.chargeBalance(userId, request.amount());
         return ResponseEntity.ok(
                 BalanceDto.Response.builder()
-                        .userId(1L)
-                        .currentAmount(50000L).build()
+                        .userId(balance.userId())
+                        .currentAmount(balance.amount()).build()
         );
     }
 }
