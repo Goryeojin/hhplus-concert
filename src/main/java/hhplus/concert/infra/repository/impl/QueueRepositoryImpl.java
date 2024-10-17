@@ -10,8 +10,6 @@ import hhplus.concert.support.type.QueueStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
 @RequiredArgsConstructor
 public class QueueRepositoryImpl implements QueueRepository {
@@ -20,30 +18,40 @@ public class QueueRepositoryImpl implements QueueRepository {
 
     @Override
     public Queue findQueue(Long userId) {
-        return queueJpaRepository.findByUserId(userId)
-                .map(QueueEntity::toDomain)
+        return queueJpaRepository.findByUserIdAndStatusNot(userId, QueueStatus.EXPIRED)
+                .map(QueueEntity::of)
                 .orElse(null);
     }
 
     @Override
     public Queue findQueue(String token) {
         return queueJpaRepository.findByToken(token)
-                .map(QueueEntity::toDomain)
+                .map(QueueEntity::of)
                 .orElseThrow(() -> new CustomException(ErrorCode.TOKEN_NOT_FOUND));
     }
 
     @Override
     public Long findActiveCount() {
-        return queueJpaRepository.countByStatusIn(QueueStatus.ACTIVE);
+        return queueJpaRepository.countByStatus(QueueStatus.ACTIVE);
     }
 
     @Override
-    public Long findRemainingQueue(Long queueId) {
-        return queueJpaRepository.countByIdLessThanAndStatusIn(queueId, List.of(QueueStatus.ACTIVE, QueueStatus.WAITING));
+    public Long findCurrentRank() {
+        return queueJpaRepository.countByStatus(QueueStatus.WAITING);
     }
 
     @Override
-    public void save(Queue token) {
-        queueJpaRepository.save(QueueEntity.from(token));
+    public Long findUserRank(Long queueId) {
+        return queueJpaRepository.countByIdLessThanAndStatus(queueId, QueueStatus.WAITING) + 1;
+    }
+
+    @Override
+    public Queue save(Queue token) {
+        return QueueEntity.of(queueJpaRepository.save(new QueueEntity().from(token)));
+    }
+
+    @Override
+    public void expireToken(Queue token) {
+        queueJpaRepository.updateStatusAndExpiredAtById(token.id(), token.status(), token.expiredAt());
     }
 }

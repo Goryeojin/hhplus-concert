@@ -2,36 +2,58 @@ package hhplus.concert.domain.service;
 
 import hhplus.concert.domain.model.Queue;
 import hhplus.concert.domain.repository.QueueRepository;
+import hhplus.concert.infra.entity.QueueEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class QueueService {
 
     private final QueueRepository queueRepository;
-    public Queue findToken(Long userId) {
+    public Queue getToken(Long userId) {
         return queueRepository.findQueue(userId);
     }
 
-    public Queue findToken(String token) {
+    public Queue getToken(String token) {
         return queueRepository.findQueue(token);
     }
 
     public Queue createToken(Long userId) {
+        // 활성화 상태 토큰 개수 검색
         Long activeCount = queueRepository.findActiveCount();
-        Queue token = Queue.createToken(userId, activeCount);
-        queueRepository.save(token);
-        return token;
+        // 대기 순번 조회
+        Long rank = queueRepository.findCurrentRank();
+        // 토큰 생성
+        Queue token = Queue.createToken(userId, activeCount, rank);
+        // 토큰 저장
+        return queueRepository.save(token);
     }
 
-    public Queue findRemainingQueue(Queue queue) {
-        // 나보다 먼저 대기열에 등록되어 있으면서, ACTIVE 또는 WAITING 상태인 대기열 조회
-        Long remainingQueue = queueRepository.findRemainingQueue(queue.id());
+    public void expireToken(Queue token) {
+        Queue expiredToken = token.expired();
+        queueRepository.expireToken(expiredToken);
+    }
+
+    public Queue checkQueueStatus(Queue queue) {
+        // 대기열 상태를 검증한다. 이때 만료된 토큰 사용 시 401 에러 반환
+        boolean activated = queue.checkStatus();
+        // 활성 상태라면 바로 반환한다.
+        if (activated) return queue;
+        // 대기 중이라면 대기자 수를 조회한다.
+        Long rank = queueRepository.findUserRank(queue.id());
+
         return Queue.builder()
                 .createdAt(queue.createdAt())
                 .status(queue.status())
-                .remainingQueueCount(remainingQueue)
+                .rank(rank)
                 .build();
+    }
+
+    public Queue validateToken(String token) {
+        Queue queue = queueRepository.findQueue(token);
+        queue.validateToken();
+        return queue;
     }
 }

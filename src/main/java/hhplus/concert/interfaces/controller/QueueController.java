@@ -3,9 +3,9 @@ package hhplus.concert.interfaces.controller;
 import hhplus.concert.application.facade.QueueFacade;
 import hhplus.concert.domain.model.Queue;
 import hhplus.concert.interfaces.dto.QueueDto;
-import hhplus.concert.interfaces.dto.TokenDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,32 +23,13 @@ public class QueueController {
      * @return token
      */
     @PostMapping("/tokens")
-    public ResponseEntity<TokenDto.Response> createToken(@RequestBody TokenDto.Request request) {
+    public ResponseEntity<QueueDto.Response> createToken(@RequestBody QueueDto.Request request) {
         Queue token = queueFacade.createToken(request.userId());
-        log.info("created token: {}", token);
-        return ResponseEntity.ok(
-                TokenDto.Response.builder()
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                QueueDto.Response.builder()
                         .token(token.token())
                         .createdAt(token.createdAt())
-                        .build()
-        );
-    }
-
-    /**
-     * Token 을 조회한다.
-     * @param userId 사용자 ID
-     * @return token
-     */
-    @GetMapping("/tokens")
-    public ResponseEntity<TokenDto.Response> getToken(@RequestHeader("User-Id") Long userId) {
-        Queue token = queueFacade.getToken(userId);
-        if (token == null) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(
-                TokenDto.Response.builder()
-                        .token(token.token())
-                        .createdAt(token.createdAt())
+                        .rank(token.rank())
                         .build()
         );
     }
@@ -67,9 +48,8 @@ public class QueueController {
         Queue queue = queueFacade.getStatus(token, userId);
         return ResponseEntity.ok(
                 QueueDto.Response.builder()
-                        .createdAt(queue.createdAt())
                         .status(queue.status())
-                        .remainingQueueCount(queue.remainingQueueCount())
+                        .rank(queue.rank())
                         .enteredAt(queue.enteredAt())
                         .expiredAt(queue.expiredAt())
                         .build()

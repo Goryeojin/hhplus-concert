@@ -3,16 +3,16 @@ package hhplus.concert.infra.entity;
 import hhplus.concert.domain.model.Queue;
 import hhplus.concert.support.type.QueueStatus;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity(name = "queue")
+@Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class QueueEntity {
 
     @Id
@@ -37,19 +37,19 @@ public class QueueEntity {
 
     private LocalDateTime expiredAt;
 
-    public Queue toDomain() {
+    public static Queue of(QueueEntity entity) {
         return Queue.builder()
-                .id(this.id)
-                .userId(this.user.id)
-                .token(this.token)
-                .status(this.status)
-                .createdAt(this.createdAt)
-                .enteredAt(this.enteredAt)
-                .expiredAt(this.expiredAt)
+                .id(entity.getId())
+                .userId(entity.getUser().getId())
+                .token(entity.getToken())
+                .status(entity.getStatus())
+                .createdAt(entity.getCreatedAt())
+                .enteredAt(entity.getEnteredAt())
+                .expiredAt(entity.getExpiredAt())
                 .build();
     }
 
-    public static QueueEntity from(Queue queue) {
+    public QueueEntity from(Queue queue) {
         return QueueEntity.builder()
                 .user(UserEntity.builder().id(queue.userId()).build())
                 .token(queue.token())
