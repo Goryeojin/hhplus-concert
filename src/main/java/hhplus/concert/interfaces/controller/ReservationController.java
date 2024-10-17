@@ -1,8 +1,14 @@
 package hhplus.concert.interfaces.controller;
 
+import hhplus.concert.application.dto.ReservationResponse;
+import hhplus.concert.application.facade.ReservationFacade;
+import hhplus.concert.domain.model.Seat;
 import hhplus.concert.interfaces.dto.ReservationDto;
+import hhplus.concert.interfaces.dto.GetSeatDto;
 import hhplus.concert.interfaces.dto.SeatDto;
 import hhplus.concert.support.type.ReservationStatus;
+import hhplus.concert.support.type.SeatStatus;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,7 +17,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/reservations")
+@RequiredArgsConstructor
 public class ReservationController {
+
+    private final ReservationFacade reservationFacade;
 
     /**
      * 콘서트 좌석을 예약한다.
@@ -19,29 +28,19 @@ public class ReservationController {
      * @param request userId, concertId, scheduleId, seats
      * @return 예약 결과 dto
      */
-    @PostMapping("/reservations")
+    @PostMapping
     public ResponseEntity<ReservationDto.Response> createReservation(
-            @RequestHeader("TOKEN") String token,
+            @RequestHeader("Token") String token,
             @RequestBody ReservationDto.Request request
     ) {
+        ReservationResponse reservation = reservationFacade.reservation(request.toCommand(token));
         return ResponseEntity.ok(
                 ReservationDto.Response.builder()
-                        .reservationId(1L)
-                        .concertId(1L)
-                        .concertName("콘서트 이름")
-                        .concertAt(LocalDateTime.now())
-                        .seats(List.of(
-                                SeatDto.Response.SeatInfo.builder()
-                                        .seatNumber(1L)
-                                        .seatPrice(10000L)
-                                        .build(),
-                                SeatDto.Response.SeatInfo.builder()
-                                        .seatNumber(2L)
-                                        .seatPrice(10000L)
-                                        .build()
-                        ))
-                        .totalPrice(20000L)
-                        .reservationStatus(ReservationStatus.PAYMENT_WAITING)
+                        .reservationId(reservation.reservationId())
+                        .concertId(reservation.concertId())
+                        .concertAt(reservation.concertAt())
+                        .seat(reservation.seat())
+                        .reservationStatus(reservation.status())
                         .build()
         );
     }

@@ -1,6 +1,7 @@
 package hhplus.concert.interfaces.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import hhplus.concert.application.dto.ReservationCommand;
 import hhplus.concert.support.type.ReservationStatus;
 import lombok.Builder;
 
@@ -14,19 +15,26 @@ public class ReservationDto {
         Long userId,
         Long concertId,
         Long scheduleId,
-        List<Integer> seatIds
+        Long seatId
     ) {
+        public ReservationCommand toCommand(String token) {
+            return ReservationCommand.builder()
+                    .token(token)
+                    .userId(this.userId)
+                    .concertId(this.concertId)
+                    .scheduleId(this.scheduleId)
+                    .seatId(this.seatId)
+                    .build();
+        }
     }
 
     @Builder
     public record Response (
         Long reservationId,
         Long concertId,
-        String concertName,
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
         LocalDateTime concertAt,
-        List<SeatDto.Response.SeatInfo> seats,
-        Long totalPrice,
+        SeatDto seat,
         ReservationStatus reservationStatus
     ) {
     }

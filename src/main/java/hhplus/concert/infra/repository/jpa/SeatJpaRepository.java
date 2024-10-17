@@ -1,5 +1,6 @@
 package hhplus.concert.infra.repository.jpa;
 
+import hhplus.concert.domain.model.Seat;
 import hhplus.concert.infra.entity.SeatEntity;
 import hhplus.concert.support.type.SeatStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -7,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface SeatJpaRepository extends JpaRepository<SeatEntity, Long> {
 
@@ -17,4 +19,6 @@ public interface SeatJpaRepository extends JpaRepository<SeatEntity, Long> {
     List<SeatEntity> findSeats(@Param("concertId") Long concertId,
                                @Param("scheduleId") Long scheduleId,
                                @Param("seatStatus") SeatStatus seatStatus);
+
+    Optional<SeatEntity> findBySeatNo(Integer seatNo);
 }
