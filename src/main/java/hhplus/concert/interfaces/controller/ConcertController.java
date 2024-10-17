@@ -1,35 +1,45 @@
 package hhplus.concert.interfaces.controller;
 
-import hhplus.concert.interfaces.dto.ConcertDto;
-import hhplus.concert.interfaces.dto.ScheduleDto;
-import hhplus.concert.interfaces.dto.SeatDto;
+import hhplus.concert.application.dto.SeatsResponse;
+import hhplus.concert.application.facade.ConcertFacade;
+import hhplus.concert.domain.model.Concert;
+import hhplus.concert.domain.model.ConcertSchedule;
+import hhplus.concert.interfaces.dto.*;
 import hhplus.concert.support.type.SeatStatus;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/concerts")
+@RequiredArgsConstructor
 public class ConcertController {
 
+    private final ConcertFacade concertFacade;
+
     /**
-     * 예약 가능한 콘서트 목록을 조회한다.
+     * 콘서트 목록을 조회한다.
      * @param token 발급받은 토큰
      * @return 콘서트 dto
      */
     @GetMapping
-    public ResponseEntity<ConcertDto.Response> getAvailableConcert(@RequestHeader("Token") String token) {
+    public ResponseEntity<GetConcertDto.Response> getConcerts(@RequestHeader("Token") String token) {
+        List<Concert> concerts = concertFacade.getConcerts(token);
+        List<ConcertDto> concertDtos = concerts.stream()
+                .map(concert -> ConcertDto.builder()
+                        .concertId(concert.id())
+                        .title(concert.title())
+                        .description(concert.description())
+                        .status(concert.status())
+                        .build())
+                .toList();
         return ResponseEntity.ok(
-                ConcertDto.Response.builder()
-                        .concerts(List.of(
-                                ConcertDto.Response.ConcertInfo.builder()
-                                        .concertId(1L)
-                                        .title("1번 콘서트")
-                                        .description("1번 콘서트 입니다.")
-                                        .build()
-                        )).build()
+                GetConcertDto.Response.builder()
+                        .concerts(concertDtos)
+                        .build()
         );
     }
 
@@ -40,25 +50,24 @@ public class ConcertController {
      * @return 콘서트 일정 dto
      */
     @GetMapping("/{concertId}/schedules")
-    public ResponseEntity<ScheduleDto.Response> getConcertSchedule(
+    public ResponseEntity<GetScheduleDto.Response> getConcertSchedules(
             @RequestHeader("Token") String token,
             @PathVariable Long concertId
     ) {
+        List<ConcertSchedule> schedules = concertFacade.getConcertSchedules(token, concertId);
+        List<ScheduleDto> scheduleDtos = (schedules != null) ? schedules.stream()
+                .map(schedule -> ScheduleDto.builder()
+                        .scheduleId(schedule.id())
+                        .concertAt(schedule.concertAt())
+                        .reservationAt(schedule.reservationAt())
+                        .deadline(schedule.deadline())
+                        .build())
+                .toList() : Collections.emptyList();
         return ResponseEntity.ok(
-                ScheduleDto.Response.builder()
-                        .concertId(1L)
-                        .schedules(List.of(
-                                ScheduleDto.Response.ScheduleInfo.builder()
-                                        .scheduleId(1L)
-                                        .concertAt(LocalDateTime.now())
-                                        .reservationAt(LocalDateTime.now())
-                                        .build(),
-                                ScheduleDto.Response.ScheduleInfo.builder()
-                                        .scheduleId(2L)
-                                        .concertAt(LocalDateTime.now())
-                                        .reservationAt(LocalDateTime.now())
-                                        .build()
-                        )).build()
+                GetScheduleDto.Response.builder()
+                        .concertId(concertId)
+                        .schedules(scheduleDtos)
+                        .build()
         );
     }
 
@@ -70,30 +79,29 @@ public class ConcertController {
      * @return 일정별 좌석 dto
      */
     @GetMapping("/{concertId}/schedules/{scheduleId}/seats")
-    public ResponseEntity<SeatDto.Response> getSeats(
+    public ResponseEntity<GetSeatDto.Response> getSeats(
             @RequestHeader("Token") String token,
             @PathVariable Long concertId,
             @PathVariable Long scheduleId
     ) {
+        SeatsResponse seats = concertFacade.getSeats(token, concertId, scheduleId);
+        List<SeatDto> list = (seats.seats() != null) ? seats.seats().stream()
+                .map(seat -> SeatDto.builder()
+                        .seatId(seat.id())
+                        .seatNo(seat.seatNo())
+                        .seatStatus(seat.status())
+                        .seatPrice(seat.seatPrice())
+                        .build())
+                .toList() : Collections.emptyList();
+
         return ResponseEntity.ok(
-                SeatDto.Response.builder()
-                        .concertId(1L)
-                        .concertAt(LocalDateTime.now())
+                GetSeatDto.Response.builder()
+                        .scheduleId(seats.scheduleId())
+                        .concertId(seats.concertId())
+                        .concertAt(seats.concertAt())
                         .maxSeats(50L)
-                        .seats(List.of(
-                                SeatDto.Response.SeatInfo.builder()
-                                        .seatId(1L)
-                                        .seatNumber(1L)
-                                        .seatStatus(SeatStatus.AVAILABLE)
-                                        .seatPrice(10000L)
-                                        .build(),
-                                SeatDto.Response.SeatInfo.builder()
-                                        .seatId(1L)
-                                        .seatNumber(1L)
-                                        .seatStatus(SeatStatus.AVAILABLE)
-                                        .seatPrice(10000L)
-                                        .build()
-                        )).build()
+                        .seats(list)
+                        .build()
         );
     }
 }

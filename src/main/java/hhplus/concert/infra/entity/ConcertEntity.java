@@ -1,9 +1,19 @@
 package hhplus.concert.infra.entity;
 
+import hhplus.concert.domain.model.Concert;
+import hhplus.concert.domain.model.Queue;
 import hhplus.concert.support.type.ConcertStatus;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity(name = "concert")
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ConcertEntity {
 
     @Id
@@ -19,4 +29,22 @@ public class ConcertEntity {
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private ConcertStatus status;
+
+    public static Concert of(ConcertEntity entity) {
+        return Concert.builder()
+                .id(entity.getId())
+                .title(entity.getTitle())
+                .description(entity.getDescription())
+                .status(entity.getStatus())
+                .build();
+    }
+
+
+    public static ConcertEntity from(Concert concert) {
+        return ConcertEntity.builder()
+                .title(concert.title())
+                .description(concert.description())
+                .status(concert.status())
+                .build();
+    }
 }
