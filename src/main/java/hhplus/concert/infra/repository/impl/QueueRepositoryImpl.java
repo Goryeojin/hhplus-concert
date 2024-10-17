@@ -8,6 +8,8 @@ import hhplus.concert.support.exception.CustomException;
 import hhplus.concert.support.exception.ErrorCode;
 import hhplus.concert.support.type.QueueStatus;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -66,8 +68,9 @@ public class QueueRepositoryImpl implements QueueRepository {
     }
 
     @Override
-    public List<Queue> findWaitingTokens(long neededTokens) {
-        return queueJpaRepository.findWaitingTokens(neededTokens).stream()
+    public List<Queue> findWaitingTokens(long limit) {
+        Pageable pageable = PageRequest.of(0, (int) limit);
+        return queueJpaRepository.findWaitingTokens(pageable).getContent().stream()
                 .map(QueueEntity::of)
                 .toList();
     }

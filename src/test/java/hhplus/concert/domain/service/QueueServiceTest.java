@@ -14,6 +14,7 @@ import org.mockito.MockitoAnnotations;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 class QueueServiceTest {
@@ -37,6 +38,8 @@ class QueueServiceTest {
         when(queueRepository.findCurrentRank()).thenReturn(5L);
 
         Queue expectedToken = Queue.createToken(userId, 10L, 5L);
+        given(queueRepository.save(any(Queue.class)))
+                .willReturn(expectedToken);
 
         // when
         Queue token = queueService.createToken(userId);
