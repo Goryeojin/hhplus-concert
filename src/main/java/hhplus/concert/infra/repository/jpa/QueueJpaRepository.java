@@ -23,4 +23,10 @@ public interface QueueJpaRepository extends JpaRepository<QueueEntity, Long> {
                                       @Param("expiredAt") LocalDateTime expiredAt);
 
     Long countByStatus(QueueStatus queueStatus);
+
+    @Query("SELECT q FROM Queue q WHERE q.expiredAt < :now AND q.status = :expiredStatus")
+    List<QueueEntity> findExpiredTokens(LocalDateTime now, QueueStatus queueStatus);
+
+    @Query(value = "SELECT q FROM QueueEntity q WHERE q.status = 'WAITING' ORDER BY q.createdAt ASC")
+    List<QueueEntity> findWaitingTokens(Long limit);
 }

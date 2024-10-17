@@ -10,6 +10,9 @@ import hhplus.concert.support.type.QueueStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Repository
 @RequiredArgsConstructor
 public class QueueRepositoryImpl implements QueueRepository {
@@ -53,5 +56,19 @@ public class QueueRepositoryImpl implements QueueRepository {
     @Override
     public void expireToken(Queue token) {
         queueJpaRepository.updateStatusAndExpiredAtById(token.id(), token.status(), token.expiredAt());
+    }
+
+    @Override
+    public List<Queue> findExpiredTokens(LocalDateTime now, QueueStatus queueStatus) {
+        return queueJpaRepository.findExpiredTokens(now, queueStatus).stream()
+                .map(QueueEntity::of)
+                .toList();
+    }
+
+    @Override
+    public List<Queue> findWaitingTokens(long neededTokens) {
+        return queueJpaRepository.findWaitingTokens(neededTokens).stream()
+                .map(QueueEntity::of)
+                .toList();
     }
 }

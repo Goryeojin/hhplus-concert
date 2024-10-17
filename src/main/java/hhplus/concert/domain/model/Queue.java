@@ -62,4 +62,15 @@ public record Queue (
             throw new CustomException(ErrorCode.UNAUTHORIZED);
         }
     }
+
+    public Queue activate() {
+        return Queue.builder()
+                .id(id)
+                .userId(userId)
+                .token(token)
+                .status(QueueStatus.ACTIVE)
+                .enteredAt(LocalDateTime.now())
+                .expiredAt(LocalDateTime.now().plusMinutes(10))
+                .build();
+    }
 }
