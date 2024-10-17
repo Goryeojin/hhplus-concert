@@ -31,7 +31,6 @@ public class ConcertFacade {
     public SeatsResponse getSeats(String token, Long concertId, Long scheduleId) {
         queueService.validateToken(token);
         ConcertSchedule schedule = concertService.scheduleInfo(scheduleId);
-        System.out.println(schedule);
         List<Seat> seats = concertService.getSeats(concertId, scheduleId);
 
         return SeatsResponse.builder()

@@ -23,7 +23,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@Transactional
 class ConcertFacadeIntegrationTest {
 
     @Autowired
@@ -51,6 +50,7 @@ class ConcertFacadeIntegrationTest {
     }
 
     @Test
+    @Transactional
     void 콘서트_조회() {
         // when
         List<Concert> concerts = concertFacade.getConcerts(token);
@@ -85,8 +85,8 @@ class ConcertFacadeIntegrationTest {
         ConcertSchedule schedule = new ConcertSchedule(1L, concert1.id(), LocalDateTime.now().minusDays(1), LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(5));
         concertRepository.saveSchedule(schedule);
 
-        Seat seat1 = new Seat(1L, schedule.id(), 1, SeatStatus.AVAILABLE, 10000); // 예약 가능
-        Seat seat2 = new Seat(2L, schedule.id(), 2, SeatStatus.UNAVAILABLE, 10000); // 예약 불가능
+        Seat seat1 = new Seat(1L, schedule.id(), 1, SeatStatus.AVAILABLE, null, 10000); // 예약 가능
+        Seat seat2 = new Seat(2L, schedule.id(), 2, SeatStatus.UNAVAILABLE, null, 10000); // 예약 불가능
         concertRepository.saveSeat(seat1);
         concertRepository.saveSeat(seat2);
 
