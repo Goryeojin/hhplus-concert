@@ -22,13 +22,13 @@ public class PaymentController {
      * @return 결제 결과 dto
      */
     @PostMapping
-    public ResponseEntity<PaymentDto.Response> proceedPayment(
+    public ResponseEntity<PaymentDto.PaymentResponse> proceedPayment(
             @RequestHeader("Token") String token,
-            @RequestBody PaymentDto.Request request
+            @RequestBody PaymentDto.PaymentRequest request
     ) {
         Payment payment = paymentFacade.payment(token, request.reservationId(), request.userId());
         return ResponseEntity.ok(
-                PaymentDto.Response.builder()
+                PaymentDto.PaymentResponse.builder()
                         .paymentId(payment.id())
                         .amount(payment.amount())
                         .paymentAt(payment.paymentAt())

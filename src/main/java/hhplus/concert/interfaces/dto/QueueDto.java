@@ -8,13 +8,13 @@ import java.time.LocalDateTime;
 
 public class QueueDto {
     @Builder
-    public record Request (
+    public record QueueRequest (
             Long userId
     ) {
     }
 
     @Builder
-    public record Response (
+    public record QueueResponse (
         String token,
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
         LocalDateTime createdAt,

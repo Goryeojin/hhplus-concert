@@ -22,10 +22,10 @@ public class BalanceController {
      * @return 잔액 dto
      */
     @GetMapping("/users/{userId}/balance")
-    public ResponseEntity<BalanceDto.Response> getBalance(@PathVariable Long userId) {
+    public ResponseEntity<BalanceDto.BalanceResponse> getBalance(@PathVariable Long userId) {
         Balance balance = balanceFacade.getBalance(userId);
         return ResponseEntity.ok(
-                BalanceDto.Response.builder()
+                BalanceDto.BalanceResponse.builder()
                         .userId(balance.userId())
                         .currentAmount(balance.amount()).build()
         );
@@ -38,13 +38,13 @@ public class BalanceController {
      * @return 잔액 dto
      */
     @PatchMapping("/users/{userId}/balance")
-    public ResponseEntity<BalanceDto.Response> chargeBalance(
+    public ResponseEntity<BalanceDto.BalanceResponse> chargeBalance(
             @PathVariable Long userId,
-            @Valid @RequestBody BalanceDto.Request request
+            @Valid @RequestBody BalanceDto.BalanceRequest request
     ) {
         Balance balance = balanceFacade.chargeBalance(userId, request.amount());
         return ResponseEntity.ok(
-                BalanceDto.Response.builder()
+                BalanceDto.BalanceResponse.builder()
                         .userId(balance.userId())
                         .currentAmount(balance.amount()).build()
         );

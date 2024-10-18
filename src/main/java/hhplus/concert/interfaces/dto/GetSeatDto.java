@@ -9,7 +9,7 @@ import java.util.List;
 public class GetSeatDto {
 
     @Builder
-    public record Response (
+    public record SeatResponse (
         Long concertId,
         Long scheduleId,
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")

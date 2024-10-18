@@ -11,7 +11,7 @@ import java.util.List;
 public class ReservationDto {
 
     @Builder
-    public record Request (
+    public record ReservationRequest (
         Long userId,
         Long concertId,
         Long scheduleId,
@@ -29,7 +29,7 @@ public class ReservationDto {
     }
 
     @Builder
-    public record Response (
+    public record ReservationResponse (
         Long reservationId,
         Long concertId,
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")

@@ -29,13 +29,13 @@ public class ReservationController {
      * @return 예약 결과 dto
      */
     @PostMapping
-    public ResponseEntity<ReservationDto.Response> createReservation(
+    public ResponseEntity<ReservationDto.ReservationResponse> createReservation(
             @RequestHeader("Token") String token,
-            @RequestBody ReservationDto.Request request
+            @RequestBody ReservationDto.ReservationRequest request
     ) {
         ReservationResponse reservation = reservationFacade.reservation(request.toCommand(token));
         return ResponseEntity.ok(
-                ReservationDto.Response.builder()
+                ReservationDto.ReservationResponse.builder()
                         .reservationId(reservation.reservationId())
                         .concertId(reservation.concertId())
                         .concertAt(reservation.concertAt())

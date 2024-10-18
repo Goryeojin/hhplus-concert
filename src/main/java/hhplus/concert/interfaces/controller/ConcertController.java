@@ -26,7 +26,7 @@ public class ConcertController {
      * @return 콘서트 dto
      */
     @GetMapping
-    public ResponseEntity<GetConcertDto.Response> getConcerts(@RequestHeader("Token") String token) {
+    public ResponseEntity<GetConcertDto.ConcertResponse> getConcerts(@RequestHeader("Token") String token) {
         List<Concert> concerts = concertFacade.getConcerts(token);
         List<ConcertDto> concertDtos = concerts.stream()
                 .map(concert -> ConcertDto.builder()
@@ -37,7 +37,7 @@ public class ConcertController {
                         .build())
                 .toList();
         return ResponseEntity.ok(
-                GetConcertDto.Response.builder()
+                GetConcertDto.ConcertResponse.builder()
                         .concerts(concertDtos)
                         .build()
         );
@@ -50,7 +50,7 @@ public class ConcertController {
      * @return 콘서트 일정 dto
      */
     @GetMapping("/{concertId}/schedules")
-    public ResponseEntity<GetScheduleDto.Response> getConcertSchedules(
+    public ResponseEntity<GetScheduleDto.ScheduleResponse> getConcertSchedules(
             @RequestHeader("Token") String token,
             @PathVariable Long concertId
     ) {
@@ -64,7 +64,7 @@ public class ConcertController {
                         .build())
                 .toList() : Collections.emptyList();
         return ResponseEntity.ok(
-                GetScheduleDto.Response.builder()
+                GetScheduleDto.ScheduleResponse.builder()
                         .concertId(concertId)
                         .schedules(scheduleDtos)
                         .build()
@@ -79,7 +79,7 @@ public class ConcertController {
      * @return 일정별 좌석 dto
      */
     @GetMapping("/{concertId}/schedules/{scheduleId}/seats")
-    public ResponseEntity<GetSeatDto.Response> getSeats(
+    public ResponseEntity<GetSeatDto.SeatResponse> getSeats(
             @RequestHeader("Token") String token,
             @PathVariable Long concertId,
             @PathVariable Long scheduleId
@@ -95,7 +95,7 @@ public class ConcertController {
                 .toList() : Collections.emptyList();
 
         return ResponseEntity.ok(
-                GetSeatDto.Response.builder()
+                GetSeatDto.SeatResponse.builder()
                         .scheduleId(seats.scheduleId())
                         .concertId(seats.concertId())
                         .concertAt(seats.concertAt())

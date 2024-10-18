@@ -7,7 +7,7 @@ import java.util.List;
 public class GetConcertDto {
 
     @Builder
-    public record Response (
+    public record ConcertResponse (
             List<ConcertDto> concerts
     ) {
     }

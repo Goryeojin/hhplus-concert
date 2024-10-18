@@ -23,10 +23,10 @@ public class QueueController {
      * @return token
      */
     @PostMapping("/tokens")
-    public ResponseEntity<QueueDto.Response> createToken(@RequestBody QueueDto.Request request) {
+    public ResponseEntity<QueueDto.QueueResponse> createToken(@RequestBody QueueDto.QueueRequest request) {
         Queue token = queueFacade.createToken(request.userId());
         return ResponseEntity.status(HttpStatus.CREATED).body(
-                QueueDto.Response.builder()
+                QueueDto.QueueResponse.builder()
                         .token(token.token())
                         .createdAt(token.createdAt())
                         .rank(token.rank())
@@ -41,13 +41,13 @@ public class QueueController {
      * @return 대기열 상태 dto
      */
     @GetMapping("/status")
-    public ResponseEntity<QueueDto.Response> getStatus(
+    public ResponseEntity<QueueDto.QueueResponse> getStatus(
             @RequestHeader("Token") String token,
             @RequestHeader("User-Id") Long userId
     ) {
         Queue queue = queueFacade.getStatus(token, userId);
         return ResponseEntity.ok(
-                QueueDto.Response.builder()
+                QueueDto.QueueResponse.builder()
                         .status(queue.status())
                         .rank(queue.rank())
                         .enteredAt(queue.enteredAt())
