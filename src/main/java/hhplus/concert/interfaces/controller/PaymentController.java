@@ -21,7 +21,7 @@ public class PaymentController {
      * @param request userId, reservationId
      * @return 결제 결과 dto
      */
-    @PostMapping("/payments")
+    @PostMapping
     public ResponseEntity<PaymentDto.Response> proceedPayment(
             @RequestHeader("Token") String token,
             @RequestBody PaymentDto.Request request
@@ -31,7 +31,8 @@ public class PaymentController {
                 PaymentDto.Response.builder()
                         .paymentId(payment.id())
                         .amount(payment.amount())
-                        .paymentStatus(payment.status()).build()
+                        .paymentAt(payment.paymentAt())
+                        .build()
         );
     }
 }

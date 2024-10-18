@@ -1,4 +1,7 @@
 package hhplus.concert.infra.repository.jpa;
 
-public interface PaymentJpaRepository {
+import hhplus.concert.infra.entity.PaymentEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface PaymentJpaRepository extends JpaRepository<PaymentEntity, Long> {
 }

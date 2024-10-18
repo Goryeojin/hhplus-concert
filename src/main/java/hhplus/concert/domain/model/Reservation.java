@@ -1,9 +1,12 @@
 package hhplus.concert.domain.model;
 
+import hhplus.concert.support.exception.CustomException;
+import hhplus.concert.support.exception.ErrorCode;
 import hhplus.concert.support.type.ReservationStatus;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Builder
 public record Reservation(
@@ -23,6 +26,28 @@ public record Reservation(
                 .userId(userId)
                 .status(ReservationStatus.PAYMENT_WAITING)
                 .reservationAt(LocalDateTime.now())
+                .build();
+    }
+
+    public void checkValidation(Long userId) {
+        // 예약하고 5분 안에 결제 신청했는지 확인
+        if (reservationAt.isBefore(LocalDateTime.now().minusMinutes(5))) {
+            throw new CustomException(ErrorCode.PAYMENT_TIMEOUT);
+        }
+        // 예약자와 결제자가 같은지 확인
+        if (!Objects.equals(userId, userId())) {
+            throw new CustomException(ErrorCode.PAYMENT_DIFFERENT_USER);
+        }
+    }
+
+    public Reservation changeStatus() {
+        return Reservation.builder()
+                .id(id)
+                .concertId(concertId)
+                .scheduleId(scheduleId)
+                .seatId(seatId)
+                .userId(userId)
+                .status(ReservationStatus.COMPLETED)
                 .build();
     }
 }

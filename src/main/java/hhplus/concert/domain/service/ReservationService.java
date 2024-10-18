@@ -19,4 +19,16 @@ public class ReservationService {
         // 예약 정보를 저장한다.
         return reservationRepository.save(reservation);
     }
+
+    public Reservation checkReservation(Long reservationId, Long userId) {
+        Reservation reservation = reservationRepository.findById(reservationId);
+        // 예약 정보를 확인한다.
+        reservation.checkValidation(userId);
+        return reservation;
+    }
+
+    public Reservation changeStatus(Reservation reservation) {
+        Reservation changedReservation = reservation.changeStatus();
+        return reservationRepository.save(changedReservation);
+    }
 }

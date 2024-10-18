@@ -21,4 +21,9 @@ public class BalanceService {
         balanceRepository.save(updatedBalance);
         return updatedBalance;
     }
+
+    public void useBalance(Balance balance, int amount) {
+        Balance usedBalance = balance.useBalance(amount);
+        balanceRepository.save(usedBalance);
+    }
 }

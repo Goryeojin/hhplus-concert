@@ -10,8 +10,15 @@ public record Payment(
         Long id,
         Long reservationId,
         Long userId,
-        Long amount,
-        LocalDateTime paymentAt,
-        PaymentStatus status
+        int amount,
+        LocalDateTime paymentAt
 ) {
+    public static Payment create(Long reservationId, Long userId, int amount) {
+        return Payment.builder()
+                .reservationId(reservationId)
+                .userId(userId)
+                .amount(amount)
+                .paymentAt(LocalDateTime.now())
+                .build();
+    }
 }

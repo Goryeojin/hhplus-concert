@@ -18,6 +18,9 @@ public enum ErrorCode {
     BEFORE_RESERVATION_AT(HttpStatus.BAD_REQUEST, "예약하기에는 이릅니다."),
     AFTER_DEADLINE(HttpStatus.BAD_REQUEST, "예약 가능 시간이 지났습니다."),
     SEAT_UNAVAILABLE(HttpStatus.BAD_REQUEST, "예약 가능한 좌석이 아닙니다."),
+    PAYMENT_TIMEOUT(HttpStatus.BAD_REQUEST, "결제 가능한 시간이 지났습니다."),
+    PAYMENT_DIFFERENT_USER(HttpStatus.BAD_REQUEST, "결제자 정보가 불일치합니다."),
+    PAYMENT_FAILED_AMOUNT(HttpStatus.BAD_REQUEST, "결제 잔액이 부족합니다."),
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 에러가 발생하였습니다.");
 
     private final HttpStatus httpStatus;
