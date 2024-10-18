@@ -29,6 +29,7 @@ public class ReservationService {
 
     public Reservation changeStatus(Reservation reservation) {
         Reservation changedReservation = reservation.changeStatus();
+        System.out.println("changedReservation = " + changedReservation);
         return reservationRepository.save(changedReservation);
     }
 }

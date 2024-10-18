@@ -94,7 +94,7 @@ class PaymentFacadeIntegrationTest {
         assertThat(payment.reservationId()).isEqualTo(reservationId);
 
         Reservation updatedReservation = reservationRepository.findById(reservationId);
-        assertThat(updatedReservation.status()).isEqualTo("COMPLETED");
+        assertThat(updatedReservation.status()).isEqualTo(ReservationStatus.COMPLETED);
 
         Balance userBalance = balanceService.getBalance(userId);
         Seat reservedSeat = concertService.getSeat(updatedReservation.seatId());

@@ -46,6 +46,7 @@ public class ReservationEntity {
 
     public static ReservationEntity from(Reservation reservation) {
         return ReservationEntity.builder()
+                .id(reservation.id())
                 .concert(ConcertEntity.builder().id(reservation.concertId()).build())
                 .schedule(ConcertScheduleEntity.builder().id(reservation.scheduleId()).build())
                 .seat(SeatEntity.builder().id(reservation.seatId()).build())
