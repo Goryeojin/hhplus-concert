@@ -1,7 +1,6 @@
 package hhplus.concert.infra.entity;
 
 import hhplus.concert.domain.model.Reservation;
-import hhplus.concert.domain.model.Seat;
 import hhplus.concert.support.type.ReservationStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

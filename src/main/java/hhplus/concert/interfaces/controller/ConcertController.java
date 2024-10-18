@@ -5,7 +5,6 @@ import hhplus.concert.application.facade.ConcertFacade;
 import hhplus.concert.domain.model.Concert;
 import hhplus.concert.domain.model.ConcertSchedule;
 import hhplus.concert.interfaces.dto.*;
-import hhplus.concert.support.type.SeatStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

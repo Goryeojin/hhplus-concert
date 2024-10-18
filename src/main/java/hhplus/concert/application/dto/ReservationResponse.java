@@ -1,5 +1,6 @@
 package hhplus.concert.application.dto;
 
+import hhplus.concert.domain.model.Seat;
 import hhplus.concert.interfaces.dto.SeatDto;
 import hhplus.concert.support.type.ReservationStatus;
 import lombok.Builder;
@@ -12,7 +13,7 @@ public record ReservationResponse(
         Long reservationId,
         Long concertId,
         LocalDateTime concertAt,
-        SeatDto seat,
+        Seat seat,
         ReservationStatus status
 ) {
 }

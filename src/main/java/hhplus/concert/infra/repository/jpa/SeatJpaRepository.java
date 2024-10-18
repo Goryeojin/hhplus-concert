@@ -1,6 +1,5 @@
 package hhplus.concert.infra.repository.jpa;
 
-import hhplus.concert.domain.model.Seat;
 import hhplus.concert.infra.entity.SeatEntity;
 import hhplus.concert.support.type.SeatStatus;
 import org.springframework.data.jpa.repository.JpaRepository;

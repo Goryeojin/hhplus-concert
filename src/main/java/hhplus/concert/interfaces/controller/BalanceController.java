@@ -2,7 +2,6 @@ package hhplus.concert.interfaces.controller;
 
 import hhplus.concert.application.facade.BalanceFacade;
 import hhplus.concert.domain.model.Balance;
-import hhplus.concert.domain.service.BalanceService;
 import hhplus.concert.interfaces.dto.BalanceDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

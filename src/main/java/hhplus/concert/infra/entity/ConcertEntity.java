@@ -1,7 +1,6 @@
 package hhplus.concert.infra.entity;
 
 import hhplus.concert.domain.model.Concert;
-import hhplus.concert.domain.model.Queue;
 import hhplus.concert.support.type.ConcertStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

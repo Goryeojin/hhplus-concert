@@ -3,7 +3,6 @@ package hhplus.concert.interfaces.controller;
 import hhplus.concert.application.facade.PaymentFacade;
 import hhplus.concert.domain.model.Payment;
 import hhplus.concert.interfaces.dto.PaymentDto;
-import hhplus.concert.support.type.PaymentStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

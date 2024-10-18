@@ -1,7 +1,5 @@
 package hhplus.concert.infra.entity;
 
-import hhplus.concert.domain.model.Concert;
-import hhplus.concert.domain.model.ConcertSchedule;
 import hhplus.concert.domain.model.Seat;
 import hhplus.concert.support.type.SeatStatus;
 import jakarta.persistence.*;

@@ -1,6 +1,5 @@
 package hhplus.concert.domain.model;
 
-import hhplus.concert.support.type.PaymentStatus;
 import lombok.Builder;
 
 import java.time.LocalDateTime;

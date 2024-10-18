@@ -2,18 +2,11 @@ package hhplus.concert.interfaces.controller;
 
 import hhplus.concert.application.dto.ReservationResponse;
 import hhplus.concert.application.facade.ReservationFacade;
-import hhplus.concert.domain.model.Seat;
 import hhplus.concert.interfaces.dto.ReservationDto;
-import hhplus.concert.interfaces.dto.GetSeatDto;
 import hhplus.concert.interfaces.dto.SeatDto;
-import hhplus.concert.support.type.ReservationStatus;
-import hhplus.concert.support.type.SeatStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/reservations")
@@ -39,7 +32,10 @@ public class ReservationController {
                         .reservationId(reservation.reservationId())
                         .concertId(reservation.concertId())
                         .concertAt(reservation.concertAt())
-                        .seat(reservation.seat())
+                        .seat(SeatDto.builder()
+                                .seatId(reservation.seat().id())
+                                .seatNo(reservation.seat().seatNo())
+                                .seatPrice(reservation.seat().seatPrice()).build())
                         .reservationStatus(reservation.status())
                         .build()
         );

@@ -1,8 +1,6 @@
 package hhplus.concert.infra.entity;
 
 import hhplus.concert.domain.model.Payment;
-import hhplus.concert.domain.model.Reservation;
-import hhplus.concert.support.type.PaymentStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

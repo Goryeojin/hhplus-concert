@@ -8,7 +8,6 @@ import hhplus.concert.domain.model.Seat;
 import hhplus.concert.domain.service.ConcertService;
 import hhplus.concert.domain.service.QueueService;
 import hhplus.concert.domain.service.ReservationService;
-import hhplus.concert.interfaces.dto.SeatDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -37,7 +36,7 @@ public class ReservationFacade {
                 .reservationId(reservation.id())
                 .concertId(schedule.concertId())
                 .concertAt(schedule.concertAt())
-                .seat(SeatDto.builder().seatId(seat.id()).seatNo(seat.seatNo()).seatPrice(seat.seatPrice()).build())
+                .seat(Seat.builder().id(seat.id()).seatNo(seat.seatNo()).seatPrice(seat.seatPrice()).build())
                 .status(reservation.status())
                 .build();
     }
