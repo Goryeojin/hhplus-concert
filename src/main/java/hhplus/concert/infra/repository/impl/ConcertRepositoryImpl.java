@@ -65,16 +65,6 @@ public class ConcertRepositoryImpl implements ConcertRepository {
     }
 
     @Override
-    public void saveConcert(Concert concert) {
-        concertJpaRepository.save(ConcertEntity.from(concert));
-    }
-
-    @Override
-    public void saveSchedule(ConcertSchedule schedule) {
-        concertScheduleJpaRepository.save(ConcertScheduleEntity.from(schedule));
-    }
-
-    @Override
     public void saveSeat(Seat seat) {
         seatJpaRepository.save(SeatEntity.from(seat));
     }

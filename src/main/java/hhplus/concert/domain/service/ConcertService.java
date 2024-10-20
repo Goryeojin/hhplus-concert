@@ -32,8 +32,8 @@ public class ConcertService {
         return concertRepository.findConcertSchedules(concert.id());
     }
 
-    public List<Seat> getSeats(Long concertId, Long scheduleId) {
-        return concertRepository.findSeats(concertId, scheduleId, SeatStatus.AVAILABLE);
+    public List<Seat> getSeats(Long concertId, Long scheduleId, SeatStatus status) {
+        return concertRepository.findSeats(concertId, scheduleId, status);
     }
 
     public ConcertSchedule scheduleInfo(Long scheduleId) {

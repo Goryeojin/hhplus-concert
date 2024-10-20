@@ -41,6 +41,7 @@ public class ConcertEntity {
 
     public static ConcertEntity from(Concert concert) {
         return ConcertEntity.builder()
+                .id(concert.id())
                 .title(concert.title())
                 .description(concert.description())
                 .status(concert.status())

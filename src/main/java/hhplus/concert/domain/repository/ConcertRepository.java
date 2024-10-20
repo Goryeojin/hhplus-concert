@@ -18,10 +18,6 @@ public interface ConcertRepository {
 
     ConcertSchedule findConcertSchedule(Long scheduleId);
 
-    void saveConcert(Concert concert);
-
-    void saveSchedule(ConcertSchedule schedule);
-
     void saveSeat(Seat seat);
 
     Seat findSeat(Long seatId);

@@ -1,7 +1,7 @@
 package hhplus.concert.application.facade;
 
 import hhplus.concert.application.dto.ReservationCommand;
-import hhplus.concert.application.dto.ReservationResponse;
+import hhplus.concert.application.dto.ReservationResult;
 import hhplus.concert.domain.model.ConcertSchedule;
 import hhplus.concert.domain.model.Reservation;
 import hhplus.concert.domain.model.Seat;
@@ -19,7 +19,7 @@ public class ReservationFacade {
     private final ConcertService concertService;
     private final ReservationService reservationService;
 
-    public ReservationResponse reservation(ReservationCommand command) {
+    public ReservationResult reservation(ReservationCommand command) {
         // 토큰 유효성 검증
         queueService.validateToken(command.token());
         // 콘서트 상태 조회
@@ -32,7 +32,7 @@ public class ReservationFacade {
         // 좌석 점유
         concertService.assignmentSeat(seat);
         // 예약 정보 리턴
-        return ReservationResponse.builder()
+        return ReservationResult.builder()
                 .reservationId(reservation.id())
                 .concertId(schedule.concertId())
                 .concertAt(schedule.concertAt())

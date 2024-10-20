@@ -6,6 +6,7 @@ import hhplus.concert.domain.model.ConcertSchedule;
 import hhplus.concert.domain.model.Seat;
 import hhplus.concert.domain.service.ConcertService;
 import hhplus.concert.domain.service.QueueService;
+import hhplus.concert.support.type.SeatStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -33,7 +34,7 @@ public class ConcertFacade {
         queueService.validateToken(token);
         Concert concert = concertService.getConcert(concertId);
         ConcertSchedule schedule = concertService.scheduleInfo(scheduleId);
-        List<Seat> seats = concertService.getSeats(concert.id(), schedule.id());
+        List<Seat> seats = concertService.getSeats(concert.id(), schedule.id(), SeatStatus.AVAILABLE);
 
         return SeatsResult.builder()
                 .scheduleId(schedule.id())

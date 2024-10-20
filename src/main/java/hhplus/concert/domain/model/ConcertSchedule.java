@@ -16,10 +16,10 @@ public record ConcertSchedule(
 ) {
     public void checkStatus() {
         if (reservationAt().isAfter(LocalDateTime.now())) {
-            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
+            throw new CustomException(ErrorCode.BEFORE_RESERVATION_AT);
         }
         if (deadline().isBefore(LocalDateTime.now())) {
-            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
+            throw new CustomException(ErrorCode.AFTER_DEADLINE);
         }
     }
 }
