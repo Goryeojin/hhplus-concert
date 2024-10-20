@@ -4,6 +4,8 @@ import hhplus.concert.domain.model.Concert;
 import hhplus.concert.domain.model.ConcertSchedule;
 import hhplus.concert.domain.model.Seat;
 import hhplus.concert.domain.repository.ConcertRepository;
+import hhplus.concert.support.exception.CustomException;
+import hhplus.concert.support.exception.ErrorCode;
 import hhplus.concert.support.type.ConcertStatus;
 import hhplus.concert.support.type.SeatStatus;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 class ConcertServiceTest {
@@ -41,7 +44,7 @@ class ConcertServiceTest {
     }
 
     @Test
-    void 예약_가능한_콘서트_조회() {
+    void 모든_콘서트를_조회한다() {
         // given
         when(concertRepository.findConcerts()).thenReturn(Arrays.asList(concert));
 
@@ -54,7 +57,7 @@ class ConcertServiceTest {
     }
 
     @Test
-    void 예약_가능한_콘서트_스케줄_조회() {
+    void 예약_가능한_콘서트의_스케줄을_조회한다() {
         // given
         ConcertSchedule schedule = ConcertSchedule.builder()
                 .id(1L)
@@ -76,7 +79,7 @@ class ConcertServiceTest {
     }
 
     @Test
-    void 예약_가능한_좌석_조회() {
+    void 예약_가능한_좌석을_조회한다() {
         // given
         Seat seat = Seat.builder()
                 .id(1L)
@@ -89,7 +92,7 @@ class ConcertServiceTest {
         when(concertRepository.findSeats(concert.id(), 1L, SeatStatus.AVAILABLE)).thenReturn(Arrays.asList(seat));
 
         // when
-        List<Seat> seats = concertService.getSeats(concert.id(), 1L);
+        List<Seat> seats = concertService.getSeats(concert.id(), 1L, SeatStatus.AVAILABLE);
 
         // then
         assertThat(seats).hasSize(1);
@@ -97,22 +100,32 @@ class ConcertServiceTest {
     }
 
     @Test
-    void 스케줄_정보_조회() {
+    void 예약_가능한_좌석이_아니면_예약_가능_검증_시_예외를_던진다() {
         // given
-        ConcertSchedule schedule = ConcertSchedule.builder()
+        ConcertSchedule schedule = mock(ConcertSchedule.class);
+        Seat unavailableSeat = Seat.builder()
                 .id(1L)
-                .concertId(concert.id())
-                .reservationAt(LocalDateTime.now().minusDays(1))
-                .deadline(LocalDateTime.now().plusDays(1))
-                .concertAt(LocalDateTime.now().plusDays(5))
+                .concertScheduleId(1L)
+                .seatNo(1)
+                .status(SeatStatus.UNAVAILABLE) // 좌석 상태가 사용 불가능
+                .seatPrice(10000)
                 .build();
-        when(concertRepository.findConcertSchedule(1L)).thenReturn(schedule);
 
-        // when
-        ConcertSchedule fetchedSchedule = concertService.scheduleInfo(1L);
+        // when & then
+        assertThatThrownBy(() -> concertService.isAvailableReservation(schedule, unavailableSeat))
+                .isInstanceOf(CustomException.class)
+                .hasMessageContaining(ErrorCode.SEAT_UNAVAILABLE.getMessage());
+    }
 
-        // then
-        assertThat(fetchedSchedule).isNotNull();
-        assertThat(fetchedSchedule.id()).isEqualTo(1L);
+    @Test
+    void 예약_가능한_일정이_아니면_예약_가능_검증_시_예외를_던진다() {
+        // given
+        ConcertSchedule schedule = new ConcertSchedule(1L, 1L, LocalDateTime.now().minusDays(1), LocalDateTime.now().minusDays(1), LocalDateTime.now().plusDays(1)); // 예약 가능 시간이 지남
+        Seat seat = mock(Seat.class);
+
+        // when & then
+        assertThatThrownBy(() -> concertService.isAvailableReservation(schedule, seat))
+                .isInstanceOf(CustomException.class)
+                .hasMessageContaining(ErrorCode.AFTER_DEADLINE.getMessage());
     }
 }

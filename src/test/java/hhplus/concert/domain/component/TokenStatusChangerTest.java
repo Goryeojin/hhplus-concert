@@ -29,7 +29,7 @@ class TokenStatusChangerTest {
     }
 
     @Test
-    void 만료된_토큰_상태_변경() {
+    void 만료시간이_지난_토큰들의_상태를_EXPIRED로_변경한다() {
         // given
         LocalDateTime now = LocalDateTime.now();
         Queue token1 = Queue.builder().userId(1L).token("1").status(QueueStatus.ACTIVE)
@@ -74,7 +74,7 @@ class TokenStatusChangerTest {
                 .build();
         List<Queue> tokens = List.of(token1, token2);
 
-        when(queueRepository.findActiveCount()).thenReturn(48L);
+        when(queueRepository.findByStatus(QueueStatus.ACTIVE)).thenReturn(48L);
         given(queueRepository.findWaitingTokens(2L))
                 .willReturn(tokens);
 
@@ -82,7 +82,7 @@ class TokenStatusChangerTest {
         tokenStatusChanger.manageActiveTokens();
 
         // then
-        verify(queueRepository, times(1)).findActiveCount();
+        verify(queueRepository, times(1)).findByStatus(QueueStatus.ACTIVE);
         verify(queueRepository, times(1)).findWaitingTokens(2L); // 필요한 수만큼 조회
         verify(queueRepository, times(1)).save(argThat(savedToken ->
                 savedToken.status() == QueueStatus.ACTIVE &&

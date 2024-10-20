@@ -23,33 +23,30 @@ class PointFacadeIntegrationTest {
     @Autowired
     private PointJpaRepository balanceJpaRepository;
 
+    private final Long USER_ID = 1L;
     @Test
-    void 잔액충전() {
+    void 유저의_잔액을_충전한다() {
         // given
-        Long userId = 1L;
         Long chargeAmount = 500L;
 
         // when
-        Point updatedPoint = pointFacade.chargePoint(userId, chargeAmount);
+        Point updatedPoint = pointFacade.chargePoint(USER_ID, chargeAmount);
 
         // then
         assertThat(updatedPoint.amount()).isEqualTo(500L);
-        assertThat(updatedPoint.userId()).isEqualTo(userId);
+        assertThat(updatedPoint.userId()).isEqualTo(USER_ID);
 
-        Point fetchedPoint = balanceService.getPoint(userId);
+        Point fetchedPoint = balanceService.getPoint(USER_ID);
         assertThat(fetchedPoint.amount()).isEqualTo(500L);
     }
 
     @Test
-    void 잔액조회() {
-        // given
-        Long userId = 1L;
-
+    void 유저의_잔액을_조회한다() {
         // when
-        Point fetchedPoint = pointFacade.getPoint(userId);
+        Point fetchedPoint = pointFacade.getPoint(USER_ID);
 
         // then
-        assertThat(fetchedPoint.amount()).isEqualTo(0L);
-        assertThat(fetchedPoint.userId()).isEqualTo(userId);
+        assertThat(fetchedPoint.amount()).isEqualTo(0L); // 초기 유저의 잔액은 0이다
+        assertThat(fetchedPoint.userId()).isEqualTo(USER_ID);
     }
 }

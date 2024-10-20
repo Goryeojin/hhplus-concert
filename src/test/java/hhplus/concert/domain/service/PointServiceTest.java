@@ -27,7 +27,7 @@ class PointServiceTest {
     }
 
     @Test
-    void 잔액조회() {
+    void 유저의_잔액을_조회한() {
         // given
         Long userId = 1L;
         Point balance = Point.builder()
@@ -48,7 +48,7 @@ class PointServiceTest {
     }
 
     @Test
-    void 잔액충전() {
+    void 유저의_잔액을_충전한다() {
         // given
         Long userId = 1L;
         Point balance = Point.builder()

@@ -12,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -55,66 +56,80 @@ class PaymentFacadeIntegrationTest {
     @Autowired
     private ConcertRepository concertRepository;
 
-    private Concert concert;
-    private ConcertSchedule schedule;
+    private final Long USER_ID = 1L;
     private Reservation reservation;
-    private Seat seat;
+    private String token;
 
     @BeforeEach
     void setUp() {
-        concert = new Concert(1L, "Test Concert", "Test Description", ConcertStatus.AVAILABLE);
-        schedule = new ConcertSchedule(1L, 1L, LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(5), LocalDateTime.now().plusDays(2));
-        seat = new Seat(1L, schedule.id(), 1, SeatStatus.AVAILABLE, null, 10000);
-        reservation = new Reservation(1L, 1L, 1L, 1L, 1L, ReservationStatus.PAYMENT_WAITING, LocalDateTime.now());
+        Queue queue = queueService.createToken(USER_ID);
+        token = queue.token(); // 토큰 검증 통과를 위한 토큰 생성
 
-        concertRepository.saveConcert(concert);
-        concertRepository.saveSchedule(schedule);
-        concertRepository.saveSeat(seat);
-        reservationRepository.save(reservation);
+        reservation = new Reservation(1L, 1L, 1L, 1L, USER_ID, ReservationStatus.PAYMENT_WAITING, LocalDateTime.now());
+        reservationRepository.save(reservation); // 테스트에서 사용할 예약을 저장한다.
     }
 
     @Test
-    void 결제_성공_통합테스트() {
+    @Transactional
+    void 잔액이_충분하다면_결제에_성공한다() {
         // given
-        Long reservationId = 1L;
-        Long userId = 1L;
-        queueService.createToken(userId);
-        Queue token = queueService.getToken(userId);
-
-        Point point = pointService.getPoint(userId);
-        pointService.chargePoint(userId, 10000L);
+        Point point = pointService.getPoint(USER_ID);
+        pointService.chargePoint(USER_ID, 10_000L);
 
         // when
-        Payment payment = paymentFacade.payment(token.token(), reservationId, userId);
+        Payment payment = paymentFacade.payment(token, reservation.id(), USER_ID);
 
         // then
         assertThat(payment).isNotNull();
-        assertThat(payment.userId()).isEqualTo(userId);
-        assertThat(payment.reservationId()).isEqualTo(reservationId);
+        assertThat(payment.userId()).isEqualTo(USER_ID);
+        assertThat(payment.reservationId()).isEqualTo(reservation.id());
 
-        Reservation updatedReservation = reservationRepository.findById(reservationId);
-        assertThat(updatedReservation.status()).isEqualTo(ReservationStatus.COMPLETED);
+        Reservation updatedReservation = reservationRepository.findById(reservation.id());
+        assertThat(updatedReservation.status()).isEqualTo(ReservationStatus.COMPLETED); // 예약이 완료 상태로 변경되었는지 검증
 
-        Point userPoint = pointService.getPoint(userId);
+        Point userPoint = pointService.getPoint(USER_ID);
         Seat reservedSeat = concertService.getSeat(updatedReservation.seatId());
-        assertThat(userPoint.amount()).isLessThanOrEqualTo(0); // 잔액 차감 확인
+        assertThat(userPoint.amount()).isEqualTo(0); // 잔액 차감 확인
     }
 
     @Test
-    void 결제_실패_잔액부족_통합테스트() {
-        // given
-        Long reservationId = 1L;  // 실제 예약 ID
-        Long userId = 1L;  // 실제 유저 ID
-        queueService.createToken(userId);
-        Queue token = queueService.getToken(userId);
-
-        // 잔액이 부족하도록 설정
-        Point point = pointService.getPoint(userId);
-        pointService.chargePoint(userId, 0L); // 잔액 0으로 설정
-
+    void 잔액이_부족할_경우_PAYMENT_FAILED_AMOUNT_에러를_반환한다() {
         // when & then
-        assertThatThrownBy(() -> paymentFacade.payment(token.token(), reservationId, userId))
+        // 잔액을 충전하지 않을 경우 잔액은 0이기 때문에 결제에 실패한다.
+        assertThatThrownBy(() -> paymentFacade.payment(token, reservation.id(), USER_ID))
                 .isInstanceOf(CustomException.class)
                 .hasFieldOrPropertyWithValue("errorCode", ErrorCode.PAYMENT_FAILED_AMOUNT);
+    }
+
+    @Test
+    void 예약자와_결제자_정보가_상이할_경우_PAYMENT_DIFFERENT_USER_에러를_반환한다() {
+        // when & then
+        assertThatThrownBy(() -> paymentFacade.payment(token, reservation.id(), 2L)) // 예약자 ID: 1L, 결제자 ID: 2L
+                .isInstanceOf(CustomException.class)
+                .hasFieldOrPropertyWithValue("errorCode", ErrorCode.PAYMENT_DIFFERENT_USER);
+    }
+
+    @Test
+    void 예약한지_5분이_지났을_경우_PAYMENT_TIMEOUT_에러를_반환한다() {
+        Reservation timeHasPassedReservation =
+                new Reservation(2L, 1L, 1L, 1L, USER_ID,
+                        ReservationStatus.PAYMENT_WAITING, LocalDateTime.now().minusMinutes(6)); // 5분 전 예약건으로 생성
+        reservationRepository.save(timeHasPassedReservation);
+        // when & then
+        assertThatThrownBy(() -> paymentFacade.payment(token, timeHasPassedReservation.id(), USER_ID))
+                .isInstanceOf(CustomException.class)
+                .hasFieldOrPropertyWithValue("errorCode", ErrorCode.PAYMENT_TIMEOUT);
+    }
+
+    @Test
+    void 이미_결제된_예약건이라면_ALREADY_PAID_에러를_반환한다() {
+        Reservation alreadyReserved =
+                new Reservation(2L, 1L, 1L, 1L, USER_ID,
+                        ReservationStatus.COMPLETED, LocalDateTime.now().minusMinutes(6));
+        reservationRepository.save(alreadyReserved);
+        // when & then
+        assertThatThrownBy(() -> paymentFacade.payment(token, alreadyReserved.id(), USER_ID))
+                .isInstanceOf(CustomException.class)
+                .hasFieldOrPropertyWithValue("errorCode", ErrorCode.ALREADY_PAID);
     }
 }
