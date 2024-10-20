@@ -1,14 +1,13 @@
 package hhplus.concert.application.dto;
 
 import hhplus.concert.domain.model.Seat;
-import hhplus.concert.interfaces.dto.SeatDto;
 import hhplus.concert.support.type.ReservationStatus;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
 
 @Builder
-public record ReservationResponse(
+public record ReservationResult(
 
         Long reservationId,
         Long concertId,

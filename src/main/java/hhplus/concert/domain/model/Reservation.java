@@ -30,6 +30,10 @@ public record Reservation(
     }
 
     public void checkValidation(Long userId) {
+        // 이미 결제되었다면 결제 실패
+        if (status == ReservationStatus.COMPLETED) {
+            throw new CustomException(ErrorCode.ALREADY_PAID);
+        }
         // 예약하고 5분 안에 결제 신청했는지 확인
         if (reservationAt.isBefore(LocalDateTime.now().minusMinutes(5))) {
             throw new CustomException(ErrorCode.PAYMENT_TIMEOUT);

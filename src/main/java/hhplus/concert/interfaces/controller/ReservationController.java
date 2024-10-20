@@ -1,9 +1,8 @@
 package hhplus.concert.interfaces.controller;
 
-import hhplus.concert.application.dto.ReservationResponse;
+import hhplus.concert.application.dto.ReservationResult;
 import hhplus.concert.application.facade.ReservationFacade;
 import hhplus.concert.interfaces.dto.ReservationDto;
-import hhplus.concert.interfaces.dto.SeatDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,18 +25,8 @@ public class ReservationController {
             @RequestHeader("Token") String token,
             @RequestBody ReservationDto.ReservationRequest request
     ) {
-        ReservationResponse reservation = reservationFacade.reservation(request.toCommand(token));
-        return ResponseEntity.ok(
-                ReservationDto.ReservationResponse.builder()
-                        .reservationId(reservation.reservationId())
-                        .concertId(reservation.concertId())
-                        .concertAt(reservation.concertAt())
-                        .seat(SeatDto.builder()
-                                .seatId(reservation.seat().id())
-                                .seatNo(reservation.seat().seatNo())
-                                .seatPrice(reservation.seat().seatPrice()).build())
-                        .reservationStatus(reservation.status())
-                        .build()
-        );
+        ReservationResult reservation = reservationFacade.reservation(request.toCommand(token));
+        return ResponseEntity.ok()
+                .body(ReservationDto.toResponse(reservation));
     }
 }

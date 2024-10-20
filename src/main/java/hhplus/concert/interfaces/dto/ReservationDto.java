@@ -2,6 +2,7 @@ package hhplus.concert.interfaces.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import hhplus.concert.application.dto.ReservationCommand;
+import hhplus.concert.application.dto.ReservationResult;
 import hhplus.concert.support.type.ReservationStatus;
 import lombok.Builder;
 
@@ -36,5 +37,18 @@ public class ReservationDto {
         SeatDto seat,
         ReservationStatus reservationStatus
     ) {
+    }
+
+    public static ReservationResponse toResponse(ReservationResult reservation) {
+        return ReservationResponse.builder()
+                .reservationId(reservation.reservationId())
+                .concertId(reservation.concertId())
+                .concertAt(reservation.concertAt())
+                .seat(SeatDto.builder()
+                        .seatId(reservation.seat().id())
+                        .seatNo(reservation.seat().seatNo())
+                        .seatPrice(reservation.seat().seatPrice()).build())
+                .reservationStatus(reservation.status())
+                .build();
     }
 }
