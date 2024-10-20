@@ -1,12 +1,11 @@
 package hhplus.concert.application.facade;
 
-import hhplus.concert.application.dto.SeatsResponse;
+import hhplus.concert.application.dto.SeatsResult;
 import hhplus.concert.domain.model.Concert;
 import hhplus.concert.domain.model.ConcertSchedule;
 import hhplus.concert.domain.model.Queue;
 import hhplus.concert.domain.model.Seat;
 import hhplus.concert.domain.repository.ConcertRepository;
-import hhplus.concert.domain.service.QueueService;
 import hhplus.concert.support.type.ConcertStatus;
 import hhplus.concert.support.type.SeatStatus;
 import org.junit.jupiter.api.BeforeEach;
@@ -91,7 +90,7 @@ class ConcertFacadeIntegrationTest {
         concertRepository.saveSeat(seat2);
 
         // when
-        SeatsResponse response = concertFacade.getSeats(token, concert1.id(), schedule.id());
+        SeatsResult response = concertFacade.getSeats(token, concert1.id(), schedule.id());
 
         // then
         assertThat(response).isNotNull();

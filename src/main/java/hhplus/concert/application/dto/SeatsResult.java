@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Builder
-public record SeatsResponse (
+public record SeatsResult(
         Long scheduleId,
         Long concertId,
         LocalDateTime concertAt,

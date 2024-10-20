@@ -1,6 +1,6 @@
 package hhplus.concert.application.facade;
 
-import hhplus.concert.application.dto.SeatsResponse;
+import hhplus.concert.application.dto.SeatsResult;
 import hhplus.concert.domain.model.Concert;
 import hhplus.concert.domain.model.ConcertSchedule;
 import hhplus.concert.domain.model.Seat;
@@ -25,15 +25,17 @@ public class ConcertFacade {
 
     public List<ConcertSchedule> getConcertSchedules(String token, Long concertId) {
         queueService.validateToken(token);
-        return concertService.getConcertSchedules(concertId);
+        Concert concert = concertService.getConcert(concertId);
+        return concertService.getConcertSchedules(concert);
     }
 
-    public SeatsResponse getSeats(String token, Long concertId, Long scheduleId) {
+    public SeatsResult getSeats(String token, Long concertId, Long scheduleId) {
         queueService.validateToken(token);
+        Concert concert = concertService.getConcert(concertId);
         ConcertSchedule schedule = concertService.scheduleInfo(scheduleId);
-        List<Seat> seats = concertService.getSeats(concertId, scheduleId);
+        List<Seat> seats = concertService.getSeats(concert.id(), schedule.id());
 
-        return SeatsResponse.builder()
+        return SeatsResult.builder()
                 .scheduleId(schedule.id())
                 .concertId(schedule.concertId())
                 .concertAt(schedule.concertAt())

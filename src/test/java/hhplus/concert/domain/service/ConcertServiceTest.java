@@ -68,7 +68,7 @@ class ConcertServiceTest {
         when(concertRepository.findConcertSchedules(concert.id())).thenReturn(Arrays.asList(schedule));
 
         // when
-        List<ConcertSchedule> schedules = concertService.getConcertSchedules(concert.id());
+        List<ConcertSchedule> schedules = concertService.getConcertSchedules(concert);
 
         // then
         assertThat(schedules).hasSize(1);

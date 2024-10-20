@@ -20,13 +20,16 @@ public class ConcertService {
         return concertRepository.findConcerts();
     }
 
-    public List<ConcertSchedule> getConcertSchedules(Long concertId) {
-        Concert concert = concertRepository.findConcert(concertId);
+    public Concert getConcert(Long concertId) {
+        return concertRepository.findConcert(concertId);
+    }
+
+    public List<ConcertSchedule> getConcertSchedules(Concert concert) {
         // 해당 콘서트가 예약 가능한지 확인
         if (!concert.checkStatus()) {
             return null;
         }
-        return concertRepository.findConcertSchedules(concertId);
+        return concertRepository.findConcertSchedules(concert.id());
     }
 
     public List<Seat> getSeats(Long concertId, Long scheduleId) {
