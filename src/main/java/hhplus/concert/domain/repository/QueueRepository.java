@@ -10,8 +10,7 @@ public interface QueueRepository {
 
     Queue findQueue(Long userId);
     Queue findQueue(String token);
-    Long findActiveCount();
-    Long findCurrentRank();
+    Long findByStatus(QueueStatus queueStatus);
     Long findUserRank(Long queueId);
     Queue save(Queue token);
     void expireToken(Queue expiredToken);

@@ -20,6 +20,8 @@ public record Queue (
         Long rank
 ) {
     public static Queue createToken(Long userId, Long activeCount, Long rank) {
+        // 활성 토큰이 50개 미만이고, 대기 순번이 0이면 `ACTIVE`
+        // 활성 토큰이 50개 이상이거나, 대기 순번이 1이상이면 `WAITING`
         QueueStatus status = (rank == 0 && activeCount < 50) ? QueueStatus.ACTIVE : QueueStatus.WAITING;
         LocalDateTime now = LocalDateTime.now();
 
@@ -29,11 +31,11 @@ public record Queue (
         return Queue.builder()
                 .userId(userId)
                 .token(token)
-                .rank((status.equals(QueueStatus.WAITING)) ? ++rank : 0)
+                .rank((status == QueueStatus.WAITING) ? rank + 1 : 0)
                 .status(status)
                 .createdAt(now)
-                .enteredAt((status.equals(QueueStatus.ACTIVE) ? now : null))
-                .expiredAt((status.equals(QueueStatus.ACTIVE) ? now.plusMinutes(10) : null))
+                .enteredAt((status == QueueStatus.ACTIVE) ? now : null)
+                .expiredAt((status == QueueStatus.ACTIVE) ? now.plusMinutes(10) : null)
                 .build();
     }
 

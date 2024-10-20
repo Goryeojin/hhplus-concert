@@ -31,7 +31,7 @@ public class TokenStatusChanger {
     // ACTIVE 토큰 수 조정
     public void manageActiveTokens() {
         // ACTIVE 상태의 토큰 수 조회
-        long activeCount = queueRepository.findActiveCount();
+        long activeCount = queueRepository.findByStatus(QueueStatus.ACTIVE);
         // ACTIVE 토큰이 50개 미만인 경우
         if (activeCount < 50) {
             // 대기 중인 토큰 조회

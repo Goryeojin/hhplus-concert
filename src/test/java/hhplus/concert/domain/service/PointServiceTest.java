@@ -37,14 +37,14 @@ class PointServiceTest {
                 .lastUpdatedAt(LocalDateTime.now())
                 .build();
 
-        when(balanceRepository.findBalance(userId)).thenReturn(balance);
+        when(balanceRepository.findPoint(userId)).thenReturn(balance);
 
         // when
-        Point result = balanceService.getBalance(userId);
+        Point result = balanceService.getPoint(userId);
 
         // then
         assertThat(result).isEqualTo(balance);
-        verify(balanceRepository, times(1)).findBalance(userId);
+        verify(balanceRepository, times(1)).findPoint(userId);
     }
 
     @Test
@@ -60,17 +60,17 @@ class PointServiceTest {
         Long chargeAmount = 500L;
         Point updatedBalance = balance.charge(chargeAmount);
 
-        when(balanceRepository.findBalance(userId)).thenReturn(balance);
+        when(balanceRepository.findPoint(userId)).thenReturn(balance);
         balanceRepository.save(balance);
 
         // when
-        Point result = balanceService.chargeBalance(userId, chargeAmount);
+        Point result = balanceService.chargePoint(userId, chargeAmount);
 
         // then
         assertThat(result).usingRecursiveComparison()
                 .ignoringFields("lastUpdatedAt") // lastUpdatedAt 필드를 무시하고 비교
                 .isEqualTo(updatedBalance);
-        verify(balanceRepository, times(1)).findBalance(userId);
+        verify(balanceRepository, times(1)).findPoint(userId);
         verify(balanceRepository, times(1)).save(result);
     }
 

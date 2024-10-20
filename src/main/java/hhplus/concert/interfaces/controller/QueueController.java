@@ -25,13 +25,8 @@ public class QueueController {
     @PostMapping("/tokens")
     public ResponseEntity<QueueDto.QueueResponse> createToken(@RequestBody QueueDto.QueueRequest request) {
         Queue token = queueFacade.createToken(request.userId());
-        return ResponseEntity.status(HttpStatus.CREATED).body(
-                QueueDto.QueueResponse.builder()
-                        .token(token.token())
-                        .createdAt(token.createdAt())
-                        .rank(token.rank())
-                        .build()
-        );
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(QueueDto.toTokenResponse(token));
     }
 
     /**
@@ -46,13 +41,7 @@ public class QueueController {
             @RequestHeader("User-Id") Long userId
     ) {
         Queue queue = queueFacade.getStatus(token, userId);
-        return ResponseEntity.ok(
-                QueueDto.QueueResponse.builder()
-                        .status(queue.status())
-                        .rank(queue.rank())
-                        .enteredAt(queue.enteredAt())
-                        .expiredAt(queue.expiredAt())
-                        .build()
-        );
+        return ResponseEntity.ok()
+                .body(QueueDto.toStatusResponse(queue));
     }
 }

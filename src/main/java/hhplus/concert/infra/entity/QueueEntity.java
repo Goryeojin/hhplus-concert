@@ -51,6 +51,7 @@ public class QueueEntity {
 
     public QueueEntity from(Queue queue) {
         return QueueEntity.builder()
+                .id(queue.id())
                 .user(UserEntity.builder().id(queue.userId()).build())
                 .token(queue.token())
                 .status(queue.status())

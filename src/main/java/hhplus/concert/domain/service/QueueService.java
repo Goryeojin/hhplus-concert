@@ -2,6 +2,7 @@ package hhplus.concert.domain.service;
 
 import hhplus.concert.domain.model.Queue;
 import hhplus.concert.domain.repository.QueueRepository;
+import hhplus.concert.support.type.QueueStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,13 +21,14 @@ public class QueueService {
 
     public Queue createToken(Long userId) {
         // 활성화 상태 토큰 개수 검색
-        Long activeCount = queueRepository.findActiveCount();
+        Long activeCount = queueRepository.findByStatus(QueueStatus.ACTIVE);
         // 대기 순번 조회
-        Long rank = queueRepository.findCurrentRank();
+        Long rank = queueRepository.findByStatus(QueueStatus.WAITING);
         // 토큰 생성
         Queue token = Queue.createToken(userId, activeCount, rank);
         // 토큰 저장
-        return queueRepository.save(token);
+        queueRepository.save(token);
+        return token;
     }
 
     public void expireToken(Queue token) {
@@ -43,9 +45,10 @@ public class QueueService {
         Long rank = queueRepository.findUserRank(queue.id());
 
         return Queue.builder()
-                .createdAt(queue.createdAt())
                 .status(queue.status())
                 .rank(rank)
+                .enteredAt(queue.enteredAt())
+                .expiredAt(queue.expiredAt())
                 .build();
     }
 

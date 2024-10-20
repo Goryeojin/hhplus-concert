@@ -36,13 +36,8 @@ public class QueueRepositoryImpl implements QueueRepository {
     }
 
     @Override
-    public Long findActiveCount() {
-        return queueJpaRepository.countByStatus(QueueStatus.ACTIVE);
-    }
-
-    @Override
-    public Long findCurrentRank() {
-        return queueJpaRepository.countByStatus(QueueStatus.WAITING);
+    public Long findByStatus(QueueStatus status) {
+        return queueJpaRepository.countByStatus(status);
     }
 
     @Override
