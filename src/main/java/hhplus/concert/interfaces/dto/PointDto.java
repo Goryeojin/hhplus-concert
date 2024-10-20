@@ -1,5 +1,6 @@
 package hhplus.concert.interfaces.dto;
 
+import hhplus.concert.domain.model.Point;
 import jakarta.validation.constraints.Min;
 import lombok.Builder;
 
@@ -16,5 +17,12 @@ public class PointDto {
         Long userId,
         Long currentAmount
     ) {
+    }
+
+    public static PointResponse toResponse(Point point) {
+        return PointResponse.builder()
+                .userId(point.userId())
+                .currentAmount(point.amount())
+                .build();
     }
 }

@@ -31,11 +31,11 @@ class QueueServiceTest {
     }
 
     @Test
-    void 토큰_생성() {
+    void 토큰을_생성한다() {
         // given
         Long userId = 1L;
-        when(queueRepository.findActiveCount()).thenReturn(10L);
-        when(queueRepository.findCurrentRank()).thenReturn(5L);
+        when(queueRepository.findByStatus(QueueStatus.ACTIVE)).thenReturn(10L);
+        when(queueRepository.findByStatus(QueueStatus.WAITING)).thenReturn(5L);
 
         Queue expectedToken = Queue.createToken(userId, 10L, 5L);
         given(queueRepository.save(any(Queue.class)))
@@ -53,7 +53,7 @@ class QueueServiceTest {
     }
 
     @Test
-    void 토큰_만료() {
+    void 토큰의_상태를_만료로_변경시킨다() {
         // given
         Queue token = mock(Queue.class);
         Queue expiredToken = mock(Queue.class);

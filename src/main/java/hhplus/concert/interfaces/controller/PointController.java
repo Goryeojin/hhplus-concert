@@ -23,11 +23,8 @@ public class PointController {
     @GetMapping("/users/{userId}/point")
     public ResponseEntity<PointDto.PointResponse> getPoint(@PathVariable Long userId) {
         Point point = pointFacade.getPoint(userId);
-        return ResponseEntity.ok(
-                PointDto.PointResponse.builder()
-                        .userId(point.userId())
-                        .currentAmount(point.amount()).build()
-        );
+        return ResponseEntity.ok()
+                .body(PointDto.toResponse(point));
     }
 
     /**
@@ -42,10 +39,7 @@ public class PointController {
             @Valid @RequestBody PointDto.PointRequest request
     ) {
         Point point = pointFacade.chargePoint(userId, request.amount());
-        return ResponseEntity.ok(
-                PointDto.PointResponse.builder()
-                        .userId(point.userId())
-                        .currentAmount(point.amount()).build()
-        );
+        return ResponseEntity.ok()
+                .body(PointDto.toResponse(point));
     }
 }

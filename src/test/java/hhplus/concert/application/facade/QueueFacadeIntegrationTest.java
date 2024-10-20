@@ -12,14 +12,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.springframework.test.annotation.DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD;
 
 @SpringBootTest
+@DirtiesContext(classMode = BEFORE_EACH_TEST_METHOD)
 public class QueueFacadeIntegrationTest {
 
     @Autowired
@@ -37,16 +40,13 @@ public class QueueFacadeIntegrationTest {
     @Autowired
     private QueueJpaRepository queueJpaRepository;
 
-    @BeforeEach
-    void setup(){
-
-    }
+    private final Long USER_ID = 1L;
 
     @Test
     @Transactional
-    void 토큰_생성_성공() {
+    void 토큰을_생성한다() {
         // given
-        Long userId = 1L;
+        Long userId = USER_ID;
 
         // when
         Queue token = queueFacade.createToken(userId);
@@ -58,9 +58,9 @@ public class QueueFacadeIntegrationTest {
     }
 
     @Test
-    void 토큰_생성_시_기존_토큰은_만료_상태로_변경() {
+    void 토큰_생성_시_기존_토큰은_만료_상태로_변경한다() {
         // given
-        Long userId = 1L;
+        Long userId = USER_ID;
 
         // when
         Queue oldToken = queueFacade.createToken(userId);
@@ -78,10 +78,10 @@ public class QueueFacadeIntegrationTest {
     @Transactional
     void 만료된_토큰_상태_조회시_예외_발생() {
         // given
-        Long userId = 1L;
+        Long userId = USER_ID;
         String uuid = "1234";
         Queue token = Queue.builder()
-                .id(1L)
+                .id(USER_ID)
                 .token(uuid)
                 .userId(userId)
                 .status(QueueStatus.EXPIRED)
@@ -99,7 +99,7 @@ public class QueueFacadeIntegrationTest {
     @Test
     void 대기열_상태_조회_성공() {
         // given
-        Long userId = 1L;
+        Long userId = USER_ID;
         Queue token = queueFacade.createToken(userId);
 
         // when

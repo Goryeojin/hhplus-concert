@@ -47,7 +47,7 @@ class QueueTest {
     }
 
     @Test
-    void 토큰_만료() {
+    void 토큰을_만료_상태로_변경한다() {
         // given
         Queue token = Queue.builder()
                 .id(1L)

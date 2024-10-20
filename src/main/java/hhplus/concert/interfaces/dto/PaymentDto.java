@@ -1,6 +1,7 @@
 package hhplus.concert.interfaces.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import hhplus.concert.domain.model.Payment;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
@@ -21,5 +22,13 @@ public class PaymentDto {
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
         LocalDateTime paymentAt
     ) {
+    }
+
+    public static PaymentResponse toResponse(Payment payment) {
+        return PaymentResponse.builder()
+                .paymentId(payment.id())
+                .amount(payment.amount())
+                .paymentAt(payment.paymentAt())
+                .build();
     }
 }

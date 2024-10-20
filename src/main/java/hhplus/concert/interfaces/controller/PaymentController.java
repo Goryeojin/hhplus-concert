@@ -26,12 +26,7 @@ public class PaymentController {
             @RequestBody PaymentDto.PaymentRequest request
     ) {
         Payment payment = paymentFacade.payment(token, request.reservationId(), request.userId());
-        return ResponseEntity.ok(
-                PaymentDto.PaymentResponse.builder()
-                        .paymentId(payment.id())
-                        .amount(payment.amount())
-                        .paymentAt(payment.paymentAt())
-                        .build()
-        );
+        return ResponseEntity.ok()
+                .body(PaymentDto.toResponse(payment));
     }
 }

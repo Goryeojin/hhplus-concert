@@ -52,6 +52,7 @@ public class QueueRepositoryImpl implements QueueRepository {
 
     @Override
     public void expireToken(Queue token) {
+        System.out.println("token = " + token);
         queueJpaRepository.updateStatusAndExpiredAtById(token.id(), token.status(), token.expiredAt());
     }
 
