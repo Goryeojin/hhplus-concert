@@ -7,14 +7,14 @@ import lombok.Builder;
 import java.time.LocalDateTime;
 
 @Builder
-public record Balance(
+public record Point(
         Long id,
         Long userId,
         Long amount,
         LocalDateTime lastUpdatedAt
 ) {
-    public Balance charge(Long amount) {
-        return Balance.builder()
+    public Point charge(Long amount) {
+        return Point.builder()
                 .id(this.id)
                 .userId(this.userId)
                 .amount(this.amount + amount)
@@ -22,11 +22,11 @@ public record Balance(
                 .build();
     }
 
-    public Balance useBalance(int useAmount) {
+    public Point usePoint(int useAmount) {
         if (this.amount < useAmount) {
             throw new CustomException(ErrorCode.PAYMENT_FAILED_AMOUNT);
         }
-        return Balance.builder()
+        return Point.builder()
                 .id(id)
                 .userId(userId)
                 .amount(amount - useAmount)

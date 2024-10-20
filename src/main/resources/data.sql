@@ -2,7 +2,7 @@ INSERT INTO users (name) VALUES ('Alice');
 INSERT INTO users (name) VALUES ('Bob');
 INSERT INTO users (name) VALUES ('Charlie');
 
-INSERT INTO balance (user_id, amount) VALUES ('1', 0);
+INSERT INTO point (user_id, amount) VALUES ('1', 0);
 
 INSERT INTO concert (title, description, status) VALUES
 ('Concert 1', 'Description of Concert 1', 'AVAILABLE'),

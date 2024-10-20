@@ -27,7 +27,6 @@ import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -87,7 +86,7 @@ class ReservationFacadeTest {
         assertThat(response).isNotNull();
         assertThat(response.reservationId()).isNotNull();
         assertThat(response.concertId()).isEqualTo(schedule.concertId());
-        assertThat(response.seat().seatId()).isEqualTo(seat.id());
+        assertThat(response.seat().id()).isEqualTo(seat.id());
         assertThat(response.seat().seatNo()).isEqualTo(seat.seatNo());
         assertThat(response.status()).isEqualTo(ReservationStatus.PAYMENT_WAITING);
 

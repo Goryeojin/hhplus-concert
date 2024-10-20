@@ -1,6 +1,6 @@
 package hhplus.concert.application.facade;
 
-import hhplus.concert.domain.model.Balance;
+import hhplus.concert.domain.model.Point;
 import hhplus.concert.domain.model.Payment;
 import hhplus.concert.domain.model.Reservation;
 import hhplus.concert.domain.model.Seat;
@@ -15,7 +15,7 @@ public class PaymentFacade {
     private final QueueService queueService;
     private final ReservationService reservationService;
     private final PaymentService paymentService;
-    private final BalanceService balanceService;
+    private final PointService pointService;
     private final ConcertService concertService;
 
     public Payment payment(String token, Long reservationId, Long userId) {
@@ -24,9 +24,9 @@ public class PaymentFacade {
         // 예약 검증 (본인인지, 시간 오버 안됐는지)
         Reservation reservation = reservationService.checkReservation(reservationId, userId);
         Seat seat = concertService.getSeat(reservation.seatId());
-        Balance balance = balanceService.getBalance(userId);
+        Point point = pointService.getPoint(userId);
         // 잔액을 확인한다.
-        balanceService.useBalance(balance, seat.seatPrice());
+        pointService.usePoint(point, seat.seatPrice());
 
         // 예약 상태를 변경한다.
         Reservation reserved = reservationService.changeStatus(reservation);

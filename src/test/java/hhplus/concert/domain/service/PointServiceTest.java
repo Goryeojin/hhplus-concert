@@ -1,7 +1,7 @@
 package hhplus.concert.domain.service;
 
-import hhplus.concert.domain.model.Balance;
-import hhplus.concert.domain.repository.BalanceRepository;
+import hhplus.concert.domain.model.Point;
+import hhplus.concert.domain.repository.PointRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -13,13 +13,13 @@ import java.time.LocalDateTime;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-class BalanceServiceTest {
+class PointServiceTest {
 
     @Mock
-    private BalanceRepository balanceRepository;
+    private PointRepository balanceRepository;
 
     @InjectMocks
-    private BalanceService balanceService;
+    private PointService balanceService;
 
     @BeforeEach
     void setUp() {
@@ -30,7 +30,7 @@ class BalanceServiceTest {
     void 잔액조회() {
         // given
         Long userId = 1L;
-        Balance balance = Balance.builder()
+        Point balance = Point.builder()
                 .id(1L)
                 .userId(userId)
                 .amount(1000L)
@@ -40,7 +40,7 @@ class BalanceServiceTest {
         when(balanceRepository.findBalance(userId)).thenReturn(balance);
 
         // when
-        Balance result = balanceService.getBalance(userId);
+        Point result = balanceService.getBalance(userId);
 
         // then
         assertThat(result).isEqualTo(balance);
@@ -51,20 +51,20 @@ class BalanceServiceTest {
     void 잔액충전() {
         // given
         Long userId = 1L;
-        Balance balance = Balance.builder()
+        Point balance = Point.builder()
                 .id(1L)
                 .userId(userId)
                 .amount(1000L)
                 .lastUpdatedAt(LocalDateTime.now())
                 .build();
         Long chargeAmount = 500L;
-        Balance updatedBalance = balance.charge(chargeAmount);
+        Point updatedBalance = balance.charge(chargeAmount);
 
         when(balanceRepository.findBalance(userId)).thenReturn(balance);
         balanceRepository.save(balance);
 
         // when
-        Balance result = balanceService.chargeBalance(userId, chargeAmount);
+        Point result = balanceService.chargeBalance(userId, chargeAmount);
 
         // then
         assertThat(result).usingRecursiveComparison()

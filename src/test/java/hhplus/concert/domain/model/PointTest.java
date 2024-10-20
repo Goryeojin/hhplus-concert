@@ -8,14 +8,13 @@ import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 
-class BalanceTest {
+class PointTest {
 
     @Test
     void 잔액_사용_성공() {
         // given
-        Balance balance = Balance.builder()
+        Point balance = Point.builder()
                 .id(1L)
                 .userId(1L)
                 .amount(10000L)  // 잔액 10,000원
@@ -23,7 +22,7 @@ class BalanceTest {
                 .build();
 
         // when
-        Balance updatedBalance = balance.useBalance(5000);  // 5,000원 사용
+        Point updatedBalance = balance.useBalance(5000);  // 5,000원 사용
 
         // then
         assertThat(updatedBalance.amount()).isEqualTo(5000L);  // 남은 잔액 5,000원
@@ -33,7 +32,7 @@ class BalanceTest {
     @Test
     void 잔액_사용_실패_잔액부족() {
         // given
-        Balance balance = Balance.builder()
+        Point balance = Point.builder()
                 .id(1L)
                 .userId(1L)
                 .amount(3000L)  // 잔액 3,000원

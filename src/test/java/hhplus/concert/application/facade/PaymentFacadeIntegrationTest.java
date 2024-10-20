@@ -12,7 +12,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -33,7 +32,7 @@ class PaymentFacadeIntegrationTest {
     private ReservationService reservationService;
 
     @Autowired
-    private BalanceService balanceService;
+    private PointService pointService;
 
     @Autowired
     private ConcertService concertService;
@@ -51,7 +50,7 @@ class PaymentFacadeIntegrationTest {
     private PaymentRepository paymentRepository;
 
     @Autowired
-    private BalanceRepository balanceRepository;
+    private PointRepository pointRepository;
 
     @Autowired
     private ConcertRepository concertRepository;
@@ -82,8 +81,8 @@ class PaymentFacadeIntegrationTest {
         queueService.createToken(userId);
         Queue token = queueService.getToken(userId);
 
-        Balance balance = balanceService.getBalance(userId);
-        balanceService.chargeBalance(userId, 10000L);
+        Point point = pointService.getPoint(userId);
+        pointService.chargePoint(userId, 10000L);
 
         // when
         Payment payment = paymentFacade.payment(token.token(), reservationId, userId);
@@ -96,9 +95,9 @@ class PaymentFacadeIntegrationTest {
         Reservation updatedReservation = reservationRepository.findById(reservationId);
         assertThat(updatedReservation.status()).isEqualTo(ReservationStatus.COMPLETED);
 
-        Balance userBalance = balanceService.getBalance(userId);
+        Point userPoint = pointService.getPoint(userId);
         Seat reservedSeat = concertService.getSeat(updatedReservation.seatId());
-        assertThat(userBalance.amount()).isLessThanOrEqualTo(0); // 잔액 차감 확인
+        assertThat(userPoint.amount()).isLessThanOrEqualTo(0); // 잔액 차감 확인
     }
 
     @Test
@@ -110,8 +109,8 @@ class PaymentFacadeIntegrationTest {
         Queue token = queueService.getToken(userId);
 
         // 잔액이 부족하도록 설정
-        Balance balance = balanceService.getBalance(userId);
-        balanceService.chargeBalance(userId, 0L); // 잔액 0으로 설정
+        Point point = pointService.getPoint(userId);
+        pointService.chargePoint(userId, 0L); // 잔액 0으로 설정
 
         // when & then
         assertThatThrownBy(() -> paymentFacade.payment(token.token(), reservationId, userId))

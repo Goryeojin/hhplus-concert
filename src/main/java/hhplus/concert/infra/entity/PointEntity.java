@@ -1,6 +1,6 @@
 package hhplus.concert.infra.entity;
 
-import hhplus.concert.domain.model.Balance;
+import hhplus.concert.domain.model.Point;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Entity(name = "balance")
+@Entity(name = "point")
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BalanceEntity {
+public class PointEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,8 +29,8 @@ public class BalanceEntity {
 
     private LocalDateTime lastUpdatedAt;
 
-    public static Balance of(BalanceEntity entity) {
-        return Balance.builder()
+    public static Point of(PointEntity entity) {
+        return Point.builder()
                 .id(entity.getId())
                 .userId(entity.getUser().getId())
                 .amount(entity.getAmount())
@@ -38,12 +38,12 @@ public class BalanceEntity {
                 .build();
     }
 
-    public static BalanceEntity from(Balance balance) {
-        return BalanceEntity.builder()
-                .id(balance.id())
-                .user(UserEntity.builder().id(balance.userId()).build())
-                .amount(balance.amount())
-                .lastUpdatedAt(balance.lastUpdatedAt())
+    public static PointEntity from(Point point) {
+        return PointEntity.builder()
+                .id(point.id())
+                .user(UserEntity.builder().id(point.userId()).build())
+                .amount(point.amount())
+                .lastUpdatedAt(point.lastUpdatedAt())
                 .build();
     }
 }
