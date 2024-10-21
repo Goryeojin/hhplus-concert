@@ -4,6 +4,7 @@ import hhplus.concert.domain.model.ConcertSchedule;
 import hhplus.concert.domain.model.Reservation;
 import hhplus.concert.domain.model.Seat;
 import hhplus.concert.domain.repository.ReservationRepository;
+import hhplus.concert.support.type.ReservationStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,8 +28,8 @@ public class ReservationService {
         return reservation;
     }
 
-    public Reservation changeStatus(Reservation reservation) {
-        Reservation changedReservation = reservation.changeStatus();
+    public Reservation changeStatus(Reservation reservation, ReservationStatus status) {
+        Reservation changedReservation = reservation.changeStatus(status);
         return reservationRepository.save(changedReservation);
     }
 }

@@ -2,16 +2,20 @@ package hhplus.concert.infra.repository.impl;
 
 import hhplus.concert.domain.model.Concert;
 import hhplus.concert.domain.model.ConcertSchedule;
+import hhplus.concert.domain.model.Reservation;
 import hhplus.concert.domain.model.Seat;
 import hhplus.concert.domain.repository.ConcertRepository;
 import hhplus.concert.infra.entity.ConcertEntity;
 import hhplus.concert.infra.entity.ConcertScheduleEntity;
+import hhplus.concert.infra.entity.ReservationEntity;
 import hhplus.concert.infra.entity.SeatEntity;
 import hhplus.concert.infra.repository.jpa.ConcertJpaRepository;
 import hhplus.concert.infra.repository.jpa.ConcertScheduleJpaRepository;
+import hhplus.concert.infra.repository.jpa.ReservationJpaRepository;
 import hhplus.concert.infra.repository.jpa.SeatJpaRepository;
 import hhplus.concert.support.exception.CustomException;
 import hhplus.concert.support.exception.ErrorCode;
+import hhplus.concert.support.type.ReservationStatus;
 import hhplus.concert.support.type.SeatStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -27,6 +31,7 @@ public class ConcertRepositoryImpl implements ConcertRepository {
     private final ConcertJpaRepository concertJpaRepository;
     private final ConcertScheduleJpaRepository concertScheduleJpaRepository;
     private final SeatJpaRepository seatJpaRepository;
+    private final ReservationJpaRepository reservationJpaRepository;
 
     @Override
     public List<Concert> findConcerts() {
@@ -74,5 +79,12 @@ public class ConcertRepositoryImpl implements ConcertRepository {
         return seatJpaRepository.findById(seatId)
                 .map(SeatEntity::of)
                 .orElseThrow(() -> new CustomException(ErrorCode.SEAT_NOT_FOUND));
+    }
+
+    @Override
+    public List<Reservation> findExpiredReservation(ReservationStatus reservationStatus, LocalDateTime localDateTime) {
+        return reservationJpaRepository.findByStatusAndReservationAtBefore(reservationStatus, localDateTime).stream()
+                .map(ReservationEntity::of)
+                .toList();
     }
 }

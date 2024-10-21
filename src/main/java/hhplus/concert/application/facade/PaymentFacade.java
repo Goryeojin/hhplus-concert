@@ -2,6 +2,7 @@ package hhplus.concert.application.facade;
 
 import hhplus.concert.domain.model.*;
 import hhplus.concert.domain.service.*;
+import hhplus.concert.support.type.ReservationStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +28,7 @@ public class PaymentFacade {
         // 잔액을 변경한다.
         pointService.usePoint(point, seat.seatPrice());
         // 예약 상태를 변경한다.
-        Reservation reserved = reservationService.changeStatus(reservation);
+        Reservation reserved = reservationService.changeStatus(reservation, ReservationStatus.COMPLETED);
         // 결제 완료 시 토큰을 만료로 처리한다.
         queueService.expireToken(queue);
         // 결제 내역을 생성한다.
