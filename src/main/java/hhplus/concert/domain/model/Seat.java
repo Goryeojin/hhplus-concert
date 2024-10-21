@@ -32,4 +32,18 @@ public record Seat(
                 .seatPrice(this.seatPrice)
                 .build();
     }
+
+    public Seat toAvailable() {
+        if (this.status == SeatStatus.UNAVAILABLE) {
+            return Seat.builder()
+                    .id(this.id)
+                    .concertScheduleId(this.concertScheduleId)
+                    .seatNo(this.seatNo)
+                    .status(SeatStatus.AVAILABLE)
+                    .reservationAt(LocalDateTime.now())
+                    .seatPrice(this.seatPrice)
+                    .build();
+        }
+        return null;
+    }
 }

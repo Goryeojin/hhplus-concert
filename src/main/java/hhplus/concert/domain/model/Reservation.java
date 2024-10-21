@@ -44,14 +44,15 @@ public record Reservation(
         }
     }
 
-    public Reservation changeStatus() {
+    public Reservation changeStatus(ReservationStatus status) {
         return Reservation.builder()
                 .id(id)
                 .concertId(concertId)
                 .scheduleId(scheduleId)
                 .seatId(seatId)
                 .userId(userId)
-                .status(ReservationStatus.COMPLETED)
+                .status(status)
+                .reservationAt(this.reservationAt)
                 .build();
     }
 }

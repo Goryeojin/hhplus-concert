@@ -1,0 +1,73 @@
+package hhplus.concert.domain.component;
+
+import hhplus.concert.domain.model.Reservation;
+import hhplus.concert.domain.model.Seat;
+import hhplus.concert.domain.repository.ConcertRepository;
+import hhplus.concert.domain.repository.ReservationRepository;
+import hhplus.concert.support.type.ReservationStatus;
+import hhplus.concert.support.type.SeatStatus;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import java.time.LocalDateTime;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+@SpringBootTest
+class SeatStatusChangerTest {
+
+    @Autowired
+    private SeatStatusChanger seatStatusChanger;
+
+    @Autowired
+    private ConcertRepository concertRepository;
+
+    @Autowired
+    private ReservationRepository reservationRepository;
+
+    private Reservation reservation;
+    private Seat seat;
+
+    @BeforeEach
+    void setUp() {
+        // 예약 및 좌석 데이터 세팅
+        seat = Seat.builder()
+                .id(1L)
+                .concertScheduleId(1L)
+                .seatNo(1)
+                .status(SeatStatus.UNAVAILABLE)
+                .reservationAt(LocalDateTime.now().minusMinutes(6)) // 예약한지 5분 이상 지난 상태
+                .seatPrice(5000)
+                .build();
+
+        reservation = Reservation.builder()
+                .id(1L)
+                .concertId(1L)
+                .scheduleId(1L)
+                .seatId(seat.id())
+                .userId(1L)
+                .status(ReservationStatus.PAYMENT_WAITING)
+                .reservationAt(LocalDateTime.now().minusMinutes(6)) // 5분 넘게 결제 대기 중
+                .build();
+
+        concertRepository.saveSeat(seat);  // 좌석 저장
+        reservationRepository.save(reservation);  // 예약 저장
+    }
+
+    @Test
+    void 예약후_5분_이상_지났지만_결제되지_않은_경우_좌석을_이용_가능_상태로_변경한다() {
+        // when
+        seatStatusChanger.manageAvailableSeats();  // 좌석 상태 변경 처리
+
+        // then
+        // 1. 좌석 상태가 AVAILABLE로 변경되었는지 확인
+        Seat updatedSeat = concertRepository.findSeat(seat.id());
+        assertThat(updatedSeat.status()).isEqualTo(SeatStatus.AVAILABLE);
+
+        // 2. 예약 상태가 EXPIRED로 변경되었는지 확인
+        Reservation updatedReservation = reservationRepository.findById(reservation.id());
+        assertThat(updatedReservation.status()).isEqualTo(ReservationStatus.EXPIRED);
+    }
+}

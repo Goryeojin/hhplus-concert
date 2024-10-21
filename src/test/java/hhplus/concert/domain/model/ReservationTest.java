@@ -101,7 +101,7 @@ class ReservationTest {
                 .build();
 
         // when
-        Reservation updatedReservation = reservation.changeStatus();
+        Reservation updatedReservation = reservation.changeStatus(ReservationStatus.COMPLETED);
 
         // then
         assertThat(updatedReservation.status()).isEqualTo(ReservationStatus.COMPLETED);
