@@ -1,25 +1,34 @@
 package hhplus.concert.interfaces.dto;
 
-import hhplus.concert.support.type.PaymentStatus;
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import hhplus.concert.domain.model.Payment;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 public class PaymentDto {
 
     @Builder
-    public record Request (
+    public record PaymentRequest (
             Long userId,
             Long reservationId
     ) {
     }
 
     @Builder
-    public record Response (
+    public record PaymentResponse (
         Long paymentId,
-        Long amount,
-        PaymentStatus paymentStatus
+        int amount,
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+        LocalDateTime paymentAt
     ) {
+    }
+
+    public static PaymentResponse toResponse(Payment payment) {
+        return PaymentResponse.builder()
+                .paymentId(payment.id())
+                .amount(payment.amount())
+                .paymentAt(payment.paymentAt())
+                .build();
     }
 }
