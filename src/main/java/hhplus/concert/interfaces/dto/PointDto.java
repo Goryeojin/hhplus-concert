@@ -7,7 +7,7 @@ import lombok.Builder;
 public class PointDto {
 
     public record PointRequest(
-            @Min(value = 1, message = "Amount must be greater then zero.")
+            @Min(value = 1, message = "충전 금액은 1원 이상이어야 합니다.")
             Long amount
     ) {
     }

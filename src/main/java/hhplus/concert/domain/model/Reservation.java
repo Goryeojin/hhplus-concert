@@ -1,7 +1,7 @@
 package hhplus.concert.domain.model;
 
 import hhplus.concert.support.exception.CustomException;
-import hhplus.concert.support.exception.ErrorCode;
+import hhplus.concert.support.code.ErrorCode;
 import hhplus.concert.support.type.ReservationStatus;
 import lombok.Builder;
 

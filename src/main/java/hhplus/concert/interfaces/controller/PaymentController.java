@@ -3,6 +3,7 @@ package hhplus.concert.interfaces.controller;
 import hhplus.concert.application.facade.PaymentFacade;
 import hhplus.concert.domain.model.Payment;
 import hhplus.concert.interfaces.dto.PaymentDto;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ public class PaymentController {
     @PostMapping
     public ResponseEntity<PaymentDto.PaymentResponse> proceedPayment(
             @RequestHeader("Token") String token,
-            @RequestBody PaymentDto.PaymentRequest request
+            @Valid @RequestBody PaymentDto.PaymentRequest request
     ) {
         Payment payment = paymentFacade.payment(token, request.reservationId(), request.userId());
         return ResponseEntity.ok()

@@ -1,7 +1,7 @@
 package hhplus.concert.domain.model;
 
 import hhplus.concert.support.exception.CustomException;
-import hhplus.concert.support.exception.ErrorCode;
+import hhplus.concert.support.code.ErrorCode;
 import hhplus.concert.support.type.ReservationStatus;
 import org.junit.jupiter.api.Test;
 
@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 
 class ReservationTest {
 

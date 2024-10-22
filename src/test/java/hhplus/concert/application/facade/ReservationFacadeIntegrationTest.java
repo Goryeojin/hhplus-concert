@@ -12,7 +12,7 @@ import hhplus.concert.domain.service.ConcertService;
 import hhplus.concert.domain.service.QueueService;
 import hhplus.concert.domain.service.ReservationService;
 import hhplus.concert.support.exception.CustomException;
-import hhplus.concert.support.exception.ErrorCode;
+import hhplus.concert.support.code.ErrorCode;
 import hhplus.concert.support.type.ReservationStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

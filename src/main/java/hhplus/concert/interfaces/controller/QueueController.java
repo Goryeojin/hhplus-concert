@@ -3,6 +3,7 @@ package hhplus.concert.interfaces.controller;
 import hhplus.concert.application.facade.QueueFacade;
 import hhplus.concert.domain.model.Queue;
 import hhplus.concert.interfaces.dto.QueueDto;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,7 @@ public class QueueController {
      * @return token
      */
     @PostMapping("/tokens")
-    public ResponseEntity<QueueDto.QueueResponse> createToken(@RequestBody QueueDto.QueueRequest request) {
+    public ResponseEntity<QueueDto.QueueResponse> createToken(@Valid @RequestBody QueueDto.QueueRequest request) {
         Queue token = queueFacade.createToken(request.userId());
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(QueueDto.toTokenResponse(token));

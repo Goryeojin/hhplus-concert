@@ -5,7 +5,7 @@ import hhplus.concert.domain.repository.QueueRepository;
 import hhplus.concert.infra.entity.QueueEntity;
 import hhplus.concert.infra.repository.jpa.QueueJpaRepository;
 import hhplus.concert.support.exception.CustomException;
-import hhplus.concert.support.exception.ErrorCode;
+import hhplus.concert.support.code.ErrorCode;
 import hhplus.concert.support.type.QueueStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;

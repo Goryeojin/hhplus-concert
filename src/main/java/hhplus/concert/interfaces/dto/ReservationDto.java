@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import hhplus.concert.application.dto.ReservationCommand;
 import hhplus.concert.application.dto.ReservationResult;
 import hhplus.concert.support.type.ReservationStatus;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 
 import java.time.LocalDateTime;

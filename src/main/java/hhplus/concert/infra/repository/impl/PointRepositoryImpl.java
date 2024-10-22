@@ -5,7 +5,7 @@ import hhplus.concert.domain.repository.PointRepository;
 import hhplus.concert.infra.entity.PointEntity;
 import hhplus.concert.infra.repository.jpa.PointJpaRepository;
 import hhplus.concert.support.exception.CustomException;
-import hhplus.concert.support.exception.ErrorCode;
+import hhplus.concert.support.code.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

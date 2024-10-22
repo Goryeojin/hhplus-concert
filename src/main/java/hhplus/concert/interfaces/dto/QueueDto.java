@@ -3,6 +3,7 @@ package hhplus.concert.interfaces.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import hhplus.concert.domain.model.Queue;
 import hhplus.concert.support.type.QueueStatus;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
