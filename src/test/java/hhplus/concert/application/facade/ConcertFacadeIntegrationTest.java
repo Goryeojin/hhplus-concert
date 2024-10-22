@@ -7,7 +7,7 @@ import hhplus.concert.domain.model.Queue;
 import hhplus.concert.domain.model.Seat;
 import hhplus.concert.domain.repository.ConcertRepository;
 import hhplus.concert.support.exception.CustomException;
-import hhplus.concert.support.exception.ErrorCode;
+import hhplus.concert.support.code.ErrorCode;
 import hhplus.concert.support.type.SeatStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

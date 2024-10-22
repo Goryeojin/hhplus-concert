@@ -14,7 +14,7 @@ import hhplus.concert.infra.repository.jpa.ConcertScheduleJpaRepository;
 import hhplus.concert.infra.repository.jpa.ReservationJpaRepository;
 import hhplus.concert.infra.repository.jpa.SeatJpaRepository;
 import hhplus.concert.support.exception.CustomException;
-import hhplus.concert.support.exception.ErrorCode;
+import hhplus.concert.support.code.ErrorCode;
 import hhplus.concert.support.type.ReservationStatus;
 import hhplus.concert.support.type.SeatStatus;
 import lombok.RequiredArgsConstructor;

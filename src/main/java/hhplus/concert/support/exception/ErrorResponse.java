@@ -1,5 +1,6 @@
 package hhplus.concert.support.exception;
 
+import hhplus.concert.support.code.ErrorCode;
 import lombok.Builder;
 import org.springframework.http.ResponseEntity;
 
@@ -16,6 +17,16 @@ public record ErrorResponse(
                         .status(e.getHttpStatus().value())
                         .code(e.name())
                         .message(e.getMessage())
+                        .build()
+                );
+    }
+    public static ResponseEntity<ErrorResponse> toResponseEntity(ErrorCode e, String message){
+        return ResponseEntity
+                .status(e.getHttpStatus())
+                .body(ErrorResponse.builder()
+                        .status(e.getHttpStatus().value())
+                        .code(e.name())
+                        .message(message)
                         .build()
                 );
     }
