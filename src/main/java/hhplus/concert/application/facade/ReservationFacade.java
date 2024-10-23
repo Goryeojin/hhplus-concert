@@ -20,8 +20,6 @@ public class ReservationFacade {
     private final ReservationService reservationService;
 
     public ReservationResult reservation(ReservationCommand command) {
-        // 토큰 유효성 검증
-        queueService.validateToken(command.token());
         // 콘서트 상태 조회
         ConcertSchedule schedule = concertService.scheduleInfo(command.scheduleId());
         Seat seat = concertService.getSeat(command.seatId());

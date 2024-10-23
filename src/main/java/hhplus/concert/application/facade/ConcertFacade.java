@@ -20,18 +20,15 @@ public class ConcertFacade {
     private final QueueService queueService;
 
     public List<Concert> getConcerts(String token) {
-        queueService.validateToken(token);
         return concertService.getConcerts();
     }
 
     public List<ConcertSchedule> getConcertSchedules(String token, Long concertId) {
-        queueService.validateToken(token);
         Concert concert = concertService.getConcert(concertId);
         return concertService.getConcertSchedules(concert);
     }
 
     public SeatsResult getSeats(String token, Long concertId, Long scheduleId) {
-        queueService.validateToken(token);
         Concert concert = concertService.getConcert(concertId);
         ConcertSchedule schedule = concertService.scheduleInfo(scheduleId);
         List<Seat> seats = concertService.getSeats(concert.id(), schedule.id(), SeatStatus.AVAILABLE);
