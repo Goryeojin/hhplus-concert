@@ -13,7 +13,7 @@ import hhplus.concert.infra.repository.jpa.ConcertJpaRepository;
 import hhplus.concert.infra.repository.jpa.ConcertScheduleJpaRepository;
 import hhplus.concert.infra.repository.jpa.ReservationJpaRepository;
 import hhplus.concert.infra.repository.jpa.SeatJpaRepository;
-import hhplus.concert.support.exception.CustomException;
+import hhplus.concert.support.exception.CoreException;
 import hhplus.concert.support.code.ErrorCode;
 import hhplus.concert.support.type.ReservationStatus;
 import hhplus.concert.support.type.SeatStatus;
@@ -52,7 +52,7 @@ public class ConcertRepositoryImpl implements ConcertRepository {
     public Concert findConcert(Long concertId) {
         return concertJpaRepository.findById(concertId)
                 .map(ConcertEntity::of)
-                .orElseThrow(() -> new CustomException(ErrorCode.CONCERT_NOT_FOUND));
+                .orElseThrow(() -> new CoreException(ErrorCode.CONCERT_NOT_FOUND));
     }
 
     @Override
@@ -66,7 +66,7 @@ public class ConcertRepositoryImpl implements ConcertRepository {
     public ConcertSchedule findConcertSchedule(Long scheduleId) {
         return concertScheduleJpaRepository.findById(scheduleId)
                 .map(ConcertScheduleEntity::of)
-                .orElseThrow(() -> new CustomException(ErrorCode.SCHEDULE_NOT_FOUND));
+                .orElseThrow(() -> new CoreException(ErrorCode.SCHEDULE_NOT_FOUND));
     }
 
     @Override
@@ -78,7 +78,7 @@ public class ConcertRepositoryImpl implements ConcertRepository {
     public Seat findSeat(Long seatId) {
         return seatJpaRepository.findById(seatId)
                 .map(SeatEntity::of)
-                .orElseThrow(() -> new CustomException(ErrorCode.SEAT_NOT_FOUND));
+                .orElseThrow(() -> new CoreException(ErrorCode.SEAT_NOT_FOUND));
     }
 
     @Override

@@ -17,8 +17,6 @@ public class PointController {
 
     /**
      * 잔액을 조회한다.
-     * @param userId 사용자 ID
-     * @return 잔액 dto
      */
     @GetMapping("/users/{userId}/point")
     public ResponseEntity<PointDto.PointResponse> getPoint(@PathVariable Long userId) {
@@ -29,9 +27,6 @@ public class PointController {
 
     /**
      * 잔액을 충전한다.
-     * @param userId 사용자 ID
-     * @param request 충전할 금액
-     * @return 잔액 dto
      */
     @PatchMapping("/users/{userId}/point")
     public ResponseEntity<PointDto.PointResponse> chargePoint(

@@ -20,14 +20,4 @@ public record ErrorResponse(
                         .build()
                 );
     }
-    public static ResponseEntity<ErrorResponse> toResponseEntity(ErrorCode e, String message){
-        return ResponseEntity
-                .status(e.getHttpStatus())
-                .body(ErrorResponse.builder()
-                        .status(e.getHttpStatus().value())
-                        .code(e.name())
-                        .message(message)
-                        .build()
-                );
-    }
 }

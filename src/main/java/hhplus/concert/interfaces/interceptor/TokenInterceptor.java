@@ -2,7 +2,7 @@ package hhplus.concert.interfaces.interceptor;
 
 import hhplus.concert.domain.service.QueueService;
 import hhplus.concert.support.code.ErrorCode;
-import hhplus.concert.support.exception.CustomException;
+import hhplus.concert.support.exception.CoreException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +28,7 @@ public class TokenInterceptor implements HandlerInterceptor {
 
         if (token == null || token.isEmpty()) {
             log.warn("토큰이 존재하지 않습니다.");
-            throw new CustomException(ErrorCode.MISSING_TOKEN);
+            throw new CoreException(ErrorCode.MISSING_TOKEN);
         }
         queueService.validateToken(token);
         return HandlerInterceptor.super.preHandle(request, response, handler);

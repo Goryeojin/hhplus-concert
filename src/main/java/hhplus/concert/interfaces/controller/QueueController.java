@@ -20,8 +20,6 @@ public class QueueController {
 
     /**
      * Queue(대기열)에 등록하고, Token 을 발급한다.
-     * @param request userId(사용자 ID)
-     * @return token
      */
     @PostMapping("/tokens")
     public ResponseEntity<QueueDto.QueueResponse> createToken(@Valid @RequestBody QueueDto.QueueRequest request) {
@@ -32,9 +30,6 @@ public class QueueController {
 
     /**
      * Queue(대기열) 상태를 조회한다.
-     * @param token 발급받은 토큰
-     * @param userId 사용자 ID
-     * @return 대기열 상태 dto
      */
     @GetMapping("/status")
     public ResponseEntity<QueueDto.QueueResponse> getStatus(

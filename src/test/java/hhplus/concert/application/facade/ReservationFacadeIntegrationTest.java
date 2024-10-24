@@ -11,7 +11,7 @@ import hhplus.concert.domain.repository.ReservationRepository;
 import hhplus.concert.domain.service.ConcertService;
 import hhplus.concert.domain.service.QueueService;
 import hhplus.concert.domain.service.ReservationService;
-import hhplus.concert.support.exception.CustomException;
+import hhplus.concert.support.exception.CoreException;
 import hhplus.concert.support.code.ErrorCode;
 import hhplus.concert.support.type.ReservationStatus;
 import org.junit.jupiter.api.BeforeEach;
@@ -65,7 +65,7 @@ class ReservationFacadeIntegrationTest {
 
         // when & then
         assertThatThrownBy(() -> reservationFacade.reservation(command))
-                .isInstanceOf(CustomException.class)
+                .isInstanceOf(CoreException.class)
                 .hasFieldOrPropertyWithValue("errorCode", ErrorCode.BEFORE_RESERVATION_AT);
 
     }
@@ -79,7 +79,7 @@ class ReservationFacadeIntegrationTest {
 
         // when & then
         assertThatThrownBy(() -> reservationFacade.reservation(command))
-                .isInstanceOf(CustomException.class)
+                .isInstanceOf(CoreException.class)
                 .hasFieldOrPropertyWithValue("errorCode", ErrorCode.AFTER_DEADLINE);
     }
     
@@ -92,7 +92,7 @@ class ReservationFacadeIntegrationTest {
 
         // when & then
         assertThatThrownBy(() -> reservationFacade.reservation(command))
-                .isInstanceOf(CustomException.class)
+                .isInstanceOf(CoreException.class)
                 .hasFieldOrPropertyWithValue("errorCode", ErrorCode.SEAT_UNAVAILABLE);
     }
     

@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
     // HTTP Error
     HTTP_MESSAGE_NOT_READABLE(HttpStatus.BAD_REQUEST, "유효하지 않은 타입이거나 요청 값이 누락되었습니다."),
+    MISSING_TOKEN(HttpStatus.UNAUTHORIZED, "토큰 값이 존재하지 않습니다."),
 
     // Business Error
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 사용자입니다."),

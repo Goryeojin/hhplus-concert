@@ -4,11 +4,11 @@ import hhplus.concert.support.code.ErrorCode;
 import lombok.Getter;
 
 @Getter
-public class CustomException extends RuntimeException {
+public class CoreException extends RuntimeException {
 
     private final ErrorCode errorCode;
 
-    public CustomException(ErrorCode errorCode) {
+    public CoreException(ErrorCode errorCode) {
         super(errorCode.getMessage());
         this.errorCode = errorCode;
     }

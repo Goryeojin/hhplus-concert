@@ -1,6 +1,6 @@
 package hhplus.concert.domain.model;
 
-import hhplus.concert.support.exception.CustomException;
+import hhplus.concert.support.exception.CoreException;
 import hhplus.concert.support.code.ErrorCode;
 import hhplus.concert.support.type.SeatStatus;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ class SeatTest {
 
         // when & then
         assertThatThrownBy(unavailableSeat::checkStatus)
-                .isInstanceOf(CustomException.class)
+                .isInstanceOf(CoreException.class)
                 .hasMessageContaining(ErrorCode.SEAT_UNAVAILABLE.getMessage());
     }
 

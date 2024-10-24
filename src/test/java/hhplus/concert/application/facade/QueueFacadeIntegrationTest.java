@@ -5,7 +5,7 @@ import hhplus.concert.domain.repository.QueueRepository;
 import hhplus.concert.domain.service.QueueService;
 import hhplus.concert.domain.service.UserService;
 import hhplus.concert.infra.repository.jpa.QueueJpaRepository;
-import hhplus.concert.support.exception.CustomException;
+import hhplus.concert.support.exception.CoreException;
 import hhplus.concert.support.code.ErrorCode;
 import hhplus.concert.support.type.QueueStatus;
 import org.junit.jupiter.api.Test;
@@ -91,7 +91,7 @@ public class QueueFacadeIntegrationTest {
 
         // when & then
         assertThatThrownBy(() -> queueFacade.getStatus(token.token(), userId))
-                .isInstanceOf(CustomException.class)
+                .isInstanceOf(CoreException.class)
                 .hasFieldOrPropertyWithValue("errorCode", ErrorCode.UNAUTHORIZED);
     }
 

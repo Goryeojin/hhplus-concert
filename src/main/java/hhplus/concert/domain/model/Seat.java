@@ -1,6 +1,6 @@
 package hhplus.concert.domain.model;
 
-import hhplus.concert.support.exception.CustomException;
+import hhplus.concert.support.exception.CoreException;
 import hhplus.concert.support.code.ErrorCode;
 import hhplus.concert.support.type.SeatStatus;
 import lombok.Builder;
@@ -18,7 +18,7 @@ public record Seat(
 ) {
     public void checkStatus() {
         if (status.equals(SeatStatus.UNAVAILABLE)) {
-            throw new CustomException(ErrorCode.SEAT_UNAVAILABLE);
+            throw new CoreException(ErrorCode.SEAT_UNAVAILABLE);
         }
     }
 

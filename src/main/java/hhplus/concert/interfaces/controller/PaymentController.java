@@ -17,9 +17,6 @@ public class PaymentController {
 
     /**
      * 결제를 진행한다.
-     * @param token 발급받은 토큰
-     * @param request userId, reservationId
-     * @return 결제 결과 dto
      */
     @PostMapping
     public ResponseEntity<PaymentDto.PaymentResponse> proceedPayment(

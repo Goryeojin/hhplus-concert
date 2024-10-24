@@ -3,7 +3,7 @@ package hhplus.concert.application.facade;
 import hhplus.concert.domain.model.*;
 import hhplus.concert.domain.repository.*;
 import hhplus.concert.domain.service.*;
-import hhplus.concert.support.exception.CustomException;
+import hhplus.concert.support.exception.CoreException;
 import hhplus.concert.support.code.ErrorCode;
 import hhplus.concert.support.type.ReservationStatus;
 import org.junit.jupiter.api.BeforeEach;
@@ -95,7 +95,7 @@ class PaymentFacadeIntegrationTest {
         // when & then
         // 잔액을 충전하지 않을 경우 잔액은 0이기 때문에 결제에 실패한다.
         assertThatThrownBy(() -> paymentFacade.payment(token, reservation.id(), USER_ID))
-                .isInstanceOf(CustomException.class)
+                .isInstanceOf(CoreException.class)
                 .hasFieldOrPropertyWithValue("errorCode", ErrorCode.PAYMENT_FAILED_AMOUNT);
     }
 
@@ -103,7 +103,7 @@ class PaymentFacadeIntegrationTest {
     void 예약자와_결제자_정보가_상이할_경우_PAYMENT_DIFFERENT_USER_에러를_반환한다() {
         // when & then
         assertThatThrownBy(() -> paymentFacade.payment(token, reservation.id(), 2L)) // 예약자 ID: 1L, 결제자 ID: 2L
-                .isInstanceOf(CustomException.class)
+                .isInstanceOf(CoreException.class)
                 .hasFieldOrPropertyWithValue("errorCode", ErrorCode.PAYMENT_DIFFERENT_USER);
     }
 
@@ -115,7 +115,7 @@ class PaymentFacadeIntegrationTest {
         reservationRepository.save(timeHasPassedReservation);
         // when & then
         assertThatThrownBy(() -> paymentFacade.payment(token, timeHasPassedReservation.id(), USER_ID))
-                .isInstanceOf(CustomException.class)
+                .isInstanceOf(CoreException.class)
                 .hasFieldOrPropertyWithValue("errorCode", ErrorCode.PAYMENT_TIMEOUT);
     }
 
@@ -127,7 +127,7 @@ class PaymentFacadeIntegrationTest {
         reservationRepository.save(alreadyReserved);
         // when & then
         assertThatThrownBy(() -> paymentFacade.payment(token, alreadyReserved.id(), USER_ID))
-                .isInstanceOf(CustomException.class)
+                .isInstanceOf(CoreException.class)
                 .hasFieldOrPropertyWithValue("errorCode", ErrorCode.ALREADY_PAID);
     }
 }

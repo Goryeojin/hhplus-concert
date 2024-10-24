@@ -1,6 +1,6 @@
 package hhplus.concert.domain.model;
 
-import hhplus.concert.support.exception.CustomException;
+import hhplus.concert.support.exception.CoreException;
 import hhplus.concert.support.code.ErrorCode;
 import org.junit.jupiter.api.Test;
 
@@ -41,7 +41,7 @@ class PointTest {
 
         // when / then
         assertThatThrownBy(() -> point.usePoint(5_000))  // 5,000원 사용 시도
-                .isInstanceOf(CustomException.class)
+                .isInstanceOf(CoreException.class)
                 .hasMessage(ErrorCode.PAYMENT_FAILED_AMOUNT.getMessage());
     }
 
