@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -20,10 +19,10 @@ import static org.springframework.test.annotation.DirtiesContext.ClassMode.BEFOR
 
 @SpringBootTest
 @DirtiesContext(classMode = BEFORE_EACH_TEST_METHOD)
-class SeatStatusChangerTest {
+class SeatSchedulerTest {
 
     @Autowired
-    private SeatStatusChanger seatStatusChanger;
+    private SeatScheduler seatScheduler;
 
     @Autowired
     private ConcertRepository concertRepository;
@@ -63,7 +62,7 @@ class SeatStatusChangerTest {
     @Test
     void 예약후_5분_이상_지났지만_결제되지_않은_경우_좌석을_이용_가능_상태로_변경한다() {
         // when
-        seatStatusChanger.manageAvailableSeats();  // 좌석 상태 변경 처리
+        seatScheduler.manageAvailableSeats();  // 좌석 상태 변경 처리
 
         // then
         // 1. 좌석 상태가 AVAILABLE로 변경되었는지 확인

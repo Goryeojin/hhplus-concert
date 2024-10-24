@@ -4,18 +4,22 @@ import hhplus.concert.domain.model.Queue;
 import hhplus.concert.domain.repository.QueueRepository;
 import hhplus.concert.support.type.QueueStatus;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class TokenStatusChanger {
+public class TokenScheduler {
 
     private final QueueRepository queueRepository;
 
     // 만료된 토큰 상태 변경
+    @Transactional
+    @Scheduled(cron = "0 * * * * *")
     public void expireTokens() {
         // 현재 시간
         LocalDateTime now = LocalDateTime.now();

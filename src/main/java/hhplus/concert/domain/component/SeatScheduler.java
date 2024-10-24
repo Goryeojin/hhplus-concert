@@ -6,6 +6,7 @@ import hhplus.concert.domain.repository.ConcertRepository;
 import hhplus.concert.domain.repository.ReservationRepository;
 import hhplus.concert.support.type.ReservationStatus;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,13 +15,14 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class SeatStatusChanger {
+public class SeatScheduler {
 
     private final ConcertRepository concertRepository;
     private final ReservationRepository reservationRepository;
 
     // 예약 후 5분 안에 결제가 되지 않았을 경우 좌석을 이용 상태로 변경한다.
     @Transactional
+    @Scheduled(cron = "0 * * * * *")
     public void manageAvailableSeats() {
         // 1. 예약한지 5분 이상 된 PAYMENT_WAITING 상태의 예약들을 찾음
         List<Reservation> unpaidReservations =
