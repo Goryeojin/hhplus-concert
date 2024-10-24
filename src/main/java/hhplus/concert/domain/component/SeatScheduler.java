@@ -26,7 +26,7 @@ public class SeatScheduler {
     public void manageAvailableSeats() {
         // 1. 예약한지 5분 이상 된 PAYMENT_WAITING 상태의 예약들을 찾음
         List<Reservation> unpaidReservations =
-                concertRepository.findExpiredReservation(ReservationStatus.PAYMENT_WAITING, LocalDateTime.now().minusMinutes(5));
+                reservationRepository.findExpiredReservation(ReservationStatus.PAYMENT_WAITING, LocalDateTime.now().minusMinutes(5));
         // 2. 각 예약에 대해 좌석 상태를 AVAILABLE 로 변경
         for (Reservation unpaidReservation : unpaidReservations) {
             Seat seat = concertRepository.findSeat(unpaidReservation.seatId());

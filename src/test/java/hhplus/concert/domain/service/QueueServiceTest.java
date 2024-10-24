@@ -2,8 +2,8 @@ package hhplus.concert.domain.service;
 
 import hhplus.concert.domain.model.Queue;
 import hhplus.concert.domain.repository.QueueRepository;
-import hhplus.concert.support.exception.CoreException;
 import hhplus.concert.support.code.ErrorCode;
+import hhplus.concert.support.exception.CoreException;
 import hhplus.concert.support.type.QueueStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

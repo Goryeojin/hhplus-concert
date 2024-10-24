@@ -28,6 +28,6 @@ public class ReservationController {
     ) {
         ReservationResult reservation = reservationFacade.reservation(request.toCommand(token));
         return ResponseEntity.ok()
-                .body(ReservationDto.toResponse(reservation));
+                .body(ReservationDto.ReservationResponse.of(reservation));
     }
 }

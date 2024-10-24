@@ -22,7 +22,7 @@ public class PointController {
     public ResponseEntity<PointDto.PointResponse> getPoint(@PathVariable Long userId) {
         Point point = pointFacade.getPoint(userId);
         return ResponseEntity.ok()
-                .body(PointDto.toResponse(point));
+                .body(PointDto.PointResponse.of(point));
     }
 
     /**
@@ -35,6 +35,6 @@ public class PointController {
     ) {
         Point point = pointFacade.chargePoint(userId, request.amount());
         return ResponseEntity.ok()
-                .body(PointDto.toResponse(point));
+                .body(PointDto.PointResponse.of(point));
     }
 }

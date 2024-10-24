@@ -17,12 +17,11 @@ public class PointDto {
         Long userId,
         Long currentAmount
     ) {
-    }
-
-    public static PointResponse toResponse(Point point) {
-        return PointResponse.builder()
-                .userId(point.userId())
-                .currentAmount(point.amount())
-                .build();
+        public static PointResponse of(Point point) {
+            return PointResponse.builder()
+                    .userId(point.userId())
+                    .currentAmount(point.amount())
+                    .build();
+        }
     }
 }

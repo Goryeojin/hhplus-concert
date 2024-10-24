@@ -1,7 +1,7 @@
 package hhplus.concert.domain.model;
 
-import hhplus.concert.support.exception.CoreException;
 import hhplus.concert.support.code.ErrorCode;
+import hhplus.concert.support.exception.CoreException;
 import hhplus.concert.support.type.SeatStatus;
 import org.junit.jupiter.api.Test;
 

@@ -25,6 +25,6 @@ public class PaymentController {
     ) {
         Payment payment = paymentFacade.payment(token, request.reservationId(), request.userId());
         return ResponseEntity.ok()
-                .body(PaymentDto.toResponse(payment));
+                .body(PaymentDto.PaymentResponse.of(payment));
     }
 }

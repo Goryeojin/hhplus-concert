@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@Slf4j
 @RestController
 @RequestMapping("/api/v1/queue")
 @RequiredArgsConstructor
@@ -25,7 +24,7 @@ public class QueueController {
     public ResponseEntity<QueueDto.QueueResponse> createToken(@Valid @RequestBody QueueDto.QueueRequest request) {
         Queue token = queueFacade.createToken(request.userId());
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(QueueDto.toTokenResponse(token));
+                .body(QueueDto.QueueResponse.of(token));
     }
 
     /**
@@ -38,6 +37,6 @@ public class QueueController {
     ) {
         Queue queue = queueFacade.getStatus(token, userId);
         return ResponseEntity.ok()
-                .body(QueueDto.toStatusResponse(queue));
+                .body(QueueDto.QueueResponse.statusOf(queue));
     }
 }

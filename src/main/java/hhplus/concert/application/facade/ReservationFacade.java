@@ -6,19 +6,19 @@ import hhplus.concert.domain.model.ConcertSchedule;
 import hhplus.concert.domain.model.Reservation;
 import hhplus.concert.domain.model.Seat;
 import hhplus.concert.domain.service.ConcertService;
-import hhplus.concert.domain.service.QueueService;
 import hhplus.concert.domain.service.ReservationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
 public class ReservationFacade {
 
-    private final QueueService queueService;
     private final ConcertService concertService;
     private final ReservationService reservationService;
 
+    @Transactional
     public ReservationResult reservation(ReservationCommand command) {
         // 콘서트 상태 조회
         ConcertSchedule schedule = concertService.scheduleInfo(command.scheduleId());

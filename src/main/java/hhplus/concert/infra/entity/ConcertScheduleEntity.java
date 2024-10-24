@@ -33,7 +33,7 @@ public class ConcertScheduleEntity {
     @Column(nullable = false)
     private LocalDateTime concertAt;
 
-    public static ConcertSchedule of(ConcertScheduleEntity entity) {
+    public ConcertSchedule of(ConcertScheduleEntity entity) {
         return ConcertSchedule.builder()
                 .id(entity.getId())
                 .concertId(entity.getConcert().getId())

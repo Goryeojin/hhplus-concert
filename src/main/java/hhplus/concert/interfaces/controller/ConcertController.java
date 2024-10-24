@@ -28,7 +28,7 @@ public class ConcertController {
     public ResponseEntity<GetConcertDto.ConcertResponse> getConcerts() {
         List<Concert> concerts = concertFacade.getConcerts();
         return ResponseEntity.ok()
-                .body(GetConcertDto.toResponse(concerts));
+                .body(GetConcertDto.ConcertResponse.of(concerts));
     }
 
     /**
@@ -40,7 +40,7 @@ public class ConcertController {
     ) {
         List<ConcertSchedule> schedules = concertFacade.getConcertSchedules(concertId);
         return ResponseEntity.ok()
-                .body(GetScheduleDto.toResponse(concertId, schedules));
+                .body(GetScheduleDto.ScheduleResponse.of(concertId, schedules));
     }
 
     /**
@@ -53,6 +53,6 @@ public class ConcertController {
     ) {
         SeatsResult seats = concertFacade.getSeats(concertId, scheduleId);
         return ResponseEntity.ok()
-                .body(GetSeatDto.toResponse(seats));
+                .body(GetSeatDto.SeatResponse.of(seats));
     }
 }

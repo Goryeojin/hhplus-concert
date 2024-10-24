@@ -44,7 +44,7 @@ public class PaymentEntity {
                 .build();
     }
 
-    public static Payment of(PaymentEntity entity) {
+    public Payment of(PaymentEntity entity) {
         return Payment.builder()
                 .id(entity.getId())
                 .reservationId(entity.getReservation().getId())

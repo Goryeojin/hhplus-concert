@@ -25,7 +25,7 @@ public class TokenScheduler {
         LocalDateTime now = LocalDateTime.now();
         // 만료 시간이 현재 시간보다 이전이고 ACTIVE 인 토큰 조회
         List<Queue> expiredTokens = queueRepository.findExpiredTokens(now, QueueStatus.ACTIVE);
-        // 만료된 토큰 상태를 EXPIRED로 변경
+        // 만료된 토큰 상태를 EXPIRED 로 변경
         for (Queue token : expiredTokens) {
             Queue expired = token.expired();
             queueRepository.save(expired); // 변경된 상태 저장

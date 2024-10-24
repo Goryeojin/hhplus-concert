@@ -3,11 +3,9 @@ package hhplus.concert.application.facade;
 import hhplus.concert.application.dto.SeatsResult;
 import hhplus.concert.domain.model.Concert;
 import hhplus.concert.domain.model.ConcertSchedule;
-import hhplus.concert.domain.model.Queue;
 import hhplus.concert.domain.model.Seat;
 import hhplus.concert.domain.repository.ConcertRepository;
 import hhplus.concert.support.type.SeatStatus;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,7 +15,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.springframework.test.annotation.DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD;
 
@@ -26,20 +23,10 @@ import static org.springframework.test.annotation.DirtiesContext.ClassMode.BEFOR
 class ConcertFacadeIntegrationTest {
 
     @Autowired
-    private QueueFacade queueFacade;
-
-    @Autowired
     private ConcertFacade concertFacade;
 
     @Autowired
     private ConcertRepository concertRepository;
-    private String token;
-
-    @BeforeEach
-    void setUp() {
-        Queue queue = queueFacade.createToken(1L);
-        token = queue.token(); // 토큰 검증 통과를 위한 토큰 생성
-    }
 
     @Test
     void 토큰이_유효하면_전체_콘서트를_조회할_수_있다() {

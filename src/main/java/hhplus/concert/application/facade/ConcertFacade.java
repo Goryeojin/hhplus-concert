@@ -5,7 +5,6 @@ import hhplus.concert.domain.model.Concert;
 import hhplus.concert.domain.model.ConcertSchedule;
 import hhplus.concert.domain.model.Seat;
 import hhplus.concert.domain.service.ConcertService;
-import hhplus.concert.domain.service.QueueService;
 import hhplus.concert.support.type.SeatStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -17,7 +16,6 @@ import java.util.List;
 public class ConcertFacade {
 
     private final ConcertService concertService;
-    private final QueueService queueService;
 
     public List<Concert> getConcerts() {
         return concertService.getConcerts();

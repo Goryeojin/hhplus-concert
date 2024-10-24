@@ -18,13 +18,12 @@ public class PointRepositoryImpl implements PointRepository {
     @Override
     public Point findPoint(Long userId) {
         return pointJpaRepository.findByUserId(userId)
-                .map(PointEntity::of)
+                .map(entity -> entity.of(entity))
                 .orElseThrow(() -> new CoreException(ErrorCode.INTERNAL_SERVER_ERROR));
     }
 
     @Override
     public void save(Point updatedPoint) {
-        PointEntity entity = PointEntity.from(updatedPoint);
-        pointJpaRepository.save(entity);
+        pointJpaRepository.save(PointEntity.from(updatedPoint));
     }
 }
