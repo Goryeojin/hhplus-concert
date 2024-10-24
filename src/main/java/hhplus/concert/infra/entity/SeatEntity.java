@@ -37,7 +37,7 @@ public class SeatEntity {
     @Column(nullable = false)
     private int seatPrice;
 
-    public static Seat of(SeatEntity entity) {
+    public Seat of(SeatEntity entity) {
         return Seat.builder()
                 .id(entity.getId())
                 .concertScheduleId(entity.getConcertSchedule().getId())

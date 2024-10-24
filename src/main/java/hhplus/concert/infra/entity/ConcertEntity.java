@@ -29,7 +29,7 @@ public class ConcertEntity {
     @Enumerated(value = EnumType.STRING)
     private ConcertStatus status;
 
-    public static Concert of(ConcertEntity entity) {
+    public Concert of(ConcertEntity entity) {
         return Concert.builder()
                 .id(entity.getId())
                 .title(entity.getTitle())
